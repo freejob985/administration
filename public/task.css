@@ -1,0 +1,53 @@
+  @import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap');
+
+        * {
+            font-family: "Changa", sans-serif;
+            font-optical-sizing: auto;
+        }
+
+        .project-name {
+            text-align: center;
+        }
+
+        .task-list {
+            text-align: center;
+        }
+
+        .delete-icon {
+            order: -1; /* لجعل .delete-icon ناحية الشمال */
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.5); /* لتكبير شيك بوكس */
+        }
+
+        .project-container {
+            background-color: #6b6e7c;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .task {
+            background-color: #ffffff; /* لون الخلفية لكل مهمة */
+            cursor: move; /* تغيير شكل المؤشر عند السحب */
+        }
+
+        .completed {
+            text-decoration: line-through; /* خط على المهام المكتملة */
+    background-color: #c8ffe0;
+
+        }
+        .progress-bar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            color: var(--bs-progress-bar-color);
+            text-align: center;
+            white-space: nowrap;
+            background-color: #63e19a !important;
+            transition: var(--bs-progress-bar-transition);
+        }
+        input#newTaskInput {
+            background: antiquewhite;
+        }
