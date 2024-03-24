@@ -15,4 +15,10 @@ class taskController extends Controller
     {
         return view('pag.mental'); // عرض البيانات في العرض المناسب
     }
+
+
+public function notebook()
+    {
+        return view('pag.notebook'); // عرض البيانات في العرض المناسب
+    }
 }
