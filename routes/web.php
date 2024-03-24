@@ -19,3 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('/tasks', [taskController::class, 'task'])->name('tasks.index');
+Route::get('/mental', [taskController::class, 'mental'])->name('mental.index');
+

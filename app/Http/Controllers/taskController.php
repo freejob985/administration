@@ -10,4 +10,9 @@ class taskController extends Controller
     {
         return view('pag.task'); // عرض البيانات في العرض المناسب
     }
+
+   public function mental()
+    {
+        return view('pag.mental'); // عرض البيانات في العرض المناسب
+    }
 }
