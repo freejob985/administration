@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\taskController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tasks', [taskController::class, 'task'])->name('tasks.index');
+Route::get('/projects', [ProjectController::class, 'task'])->name('tasks.index');
 Route::get('/mental', [taskController::class, 'mental'])->name('mental.index');
 Route::get('/notebook', [taskController::class, 'notebook'])->name('notebook.index');
 
 
+Route::post('/projects', [ProjectController::class, 'store']);
+Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);

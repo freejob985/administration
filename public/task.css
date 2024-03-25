@@ -1,53 +1,114 @@
-  @import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Changa:wght@200..800&display=swap');
 
-        * {
-            font-family: "Changa", sans-serif;
-            font-optical-sizing: auto;
-        }
+* {
+    font-family: "Changa", sans-serif;
+    font-optical-sizing: auto;
+}
 
-        .project-name {
-            text-align: center;
-        }
+body {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 150px;
+    font-family: 'Amiri', serif;
+}
 
-        .task-list {
-            text-align: center;
-        }
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    background: #f0f0f0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-        .delete-icon {
-            order: -1; /* لجعل .delete-icon ناحية الشمال */
-        }
+header h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-right: 10px;
+    color: black;
+}
 
-        input[type="checkbox"] {
-            transform: scale(1.5); /* لتكبير شيك بوكس */
-        }
+.project-name {
+    text-align: center;
+    color: black !important;
+}
 
-        .project-container {
-            background-color: #6b6e7c;
-            padding: 12px;
-            border-radius: 10px;
-        }
+.task-list {
+    text-align: center;
+}
 
-        .task {
-            background-color: #ffffff; /* لون الخلفية لكل مهمة */
-            cursor: move; /* تغيير شكل المؤشر عند السحب */
-        }
+.delete-icon {
+    order: -1;
+}
 
-        .completed {
-            text-decoration: line-through; /* خط على المهام المكتملة */
-    background-color: #c8ffe0;
+input[type="checkbox"] {
+    transform: scale(1.5);
+}
 
-        }
-        .progress-bar {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-            color: var(--bs-progress-bar-color);
-            text-align: center;
-            white-space: nowrap;
-            background-color: #63e19a !important;
-            transition: var(--bs-progress-bar-transition);
-        }
-        input#newTaskInput {
-            background: antiquewhite;
-        }
+.project-container {
+    background-color: #6b6e7c;
+    padding: 12px;
+    border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.task {
+    background-color: #ffffff;
+    cursor: move;
+    display: flex;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+
+.completed {
+    background-color: #c8ffe0 !important;
+    text-decoration: line-through;
+    color: #888;
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--bs-progress-bar-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: #63e19a !important;
+    transition: var(--bs-progress-bar-transition);
+}
+
+.delete-icon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.footer-container {
+    height: 150px;
+}
+
+.project-row {
+    min-height: calc(100vh - 200px);
+}
