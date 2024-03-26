@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class taskController extends Controller
@@ -15,6 +17,31 @@ class taskController extends Controller
    public function mental()
     {
         return view('pag.mental'); // عرض البيانات في العرض المناسب
+    }
+
+public function store(Request $request, Project $project)
+    {
+        $task = new Task();
+        $task->name = $request->input('name');
+        $task->project_id = $project->id;
+        $task->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $task->completed = $request->input('completed');
+        $task->save();
+
+        return response()->json(['success' => true]);
     }
 
 

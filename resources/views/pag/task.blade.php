@@ -1,12 +1,15 @@
+
+
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>قائمة المهام</title>
-    <link rel="stylesheet" href="task.css">
+    <link rel="stylesheet" href="{{ asset('css/task.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -100,17 +103,55 @@
         h1.text-center.mb-0 {
             color: black;
         }
+
+.completed {
+    background-color: #44b89d !important;
+    text-decoration: line-through;
+    color: #fff;
+}
+.bg-warning {
+    --bs-bg-opacity: 1;
+    background-color: unset !important;
+    font-size: 25px !important;
+}
+.text-danger {
+    --bs-text-opacity: 1;
+    color: unset !important;
+}
+.project-header.d-flex.justify-content-between.align-items-center.mb-3 {
+    background: white;
+    color: black;
+    padding: 2%;
+    border-radius: 16px;
+}
+.project-name.bg-warning.text-white.fw-bold.py-2.rounded {
+    color: black !important;
+}
+/* .task.completed:before {
+    content: '✔️';
+    margin-right: 5px;
+} */
+
+.bg-warning {
+    --bs-bg-opacity: 1;
+    background-color: unset !important;
+    font-size: 35px !important;
+}
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--bs-progress-bar-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: #44b89d !important;
+    transition: var(--bs-progress-bar-transition);
+}
     </style>
 </head>
 <body>
 
-    {{-- <header class="bg-primary text-white py-3 mb-4">
-        <div class="container">
-            <h1 class="text-center mb-0">TASKS</h1>
-        </div>
-        <br>
-        <br>
-    </header> --}}
     <br>
     <br>
     <div class="container-fluid">
@@ -118,11 +159,6 @@
             <!-- Projects will be loaded here -->
         </div>
     </div>
-
-    {{-- <div class="fixed-bottom d-flex justify-content-center mb-3">
-        <button class="btn btn-primary btn-lg" >إضافة مشروع جديد</button>
-    </div> --}}
-
 
     <div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1;">
         <div class="d-flex justify-content-center">
@@ -135,7 +171,6 @@
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addProjectModal" onclick="showAddProjectModal()">إضافة مشروع جديد</button>
         </div>
     </div>
-
 
     <!-- Modal for Adding Project -->
     <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModalLabel" aria-hidden="true">
@@ -166,157 +201,6 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function() {
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-            // Load projects from the server
-            loadProjects();
-
-            // Initialize Sortable.js
-            initializeSortable();
-        });
-
-        function loadProjects() {
-            $.ajax({
-                url: '/administration/public/projects', // Replace with the actual URL to fetch projects
-                type: 'GET',
-                success: function(response) {
-                    $('#projectsContainer').html(response);
-                    initializeSortable();
-                },
-                error: function() {
-                    alert('Error loading projects');
-                }
-            });
-        }
-
-        function initializeSortable() {
-            $(".sortable").sortable({
-                placeholder: "ui-state-highlight",
-                update: function(event, ui) {
-                    updateProgressBar(this);
-                }
-            });
-            $(".sortable").disableSelection();
-        }
-
-        // Event listeners for task completion
-        function toggleTaskCompletion(checkbox) {
-            const taskElement = checkbox.parentElement.parentElement;
-            taskElement.classList.toggle('completed');
-            updateProgressBar(taskElement.closest('.sortable'));
-        }
-
-        function toggleTaskCompletionText(taskText) {
-            const taskElement = taskText.parentElement.parentElement;
-            taskElement.classList.toggle('completed');
-            const checkbox = taskElement.querySelector('input[type="checkbox"]');
-            checkbox.checked = taskElement.classList.contains('completed');
-            updateProgressBar(taskElement.closest('.sortable'));
-        }
-
-        // Function to delete task
-        function deleteTask(event, taskElement) {
-            const task = taskElement.parentElement;
-            const sortableList = task.parentElement;
-            const isCompleted = task.classList.contains('completed');
-            if (task) {
-                task.remove();
-                updateProgressBar(sortableList, isCompleted);
-            }
-        }
-
-        // Function to add new task
-        function addNewTaskOnEnter(event, input, sortableId) {
-            if (event.key === 'Enter') {
-                addNewTask(input, sortableId);
-            }
-        }
-
-        function addNewTask(input, sortableId) {
-            const newTaskInput = input;
-            const newTaskText = newTaskInput.value.trim();
-
-            if (newTaskText !== '') {
-                const taskList = $(`#${sortableId}`);
-                const newTask = document.createElement('div');
-                newTask.className = 'task d-flex align-items-center bg-white rounded shadow-sm mb-2 p-2 draggable';
-                newTask.innerHTML = `
-                    <label class="d-flex align-items-center mb-0" onclick="deleteTask(event, this)">
-                        <i class="fas fa-times text-danger"></i>
-                    </label>
-                    <div class="delete-icon ms-auto">
-                        <input type="checkbox" class="me-2" onchange="toggleTaskCompletion(this)">
-                        <span class="task-text me-2" onclick="toggleTaskCompletionText(this)">${newTaskText}</span>
-                    </div>
-                `;
-
-                newTask.addEventListener('click', function() {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    toggleTaskCompletion(checkbox);
-                });
-
-                taskList.append(newTask);
-                newTaskInput.value = '';
-
-                updateProgressBar(taskList);
-                initializeSortable(); // Re-initialize Sortable for the new list
-            }
-        }
-
-        // Function to update progress bar
-        function updateProgressBar(sortableList, decrementPercentage = false) {
-            const tasks = $(sortableList).find('.task');
-            const completedTasks = $(sortableList).find('.completed');
-            const progressBar = $(sortableList).closest('.task-list').find('.progress-bar');
-            let progressPercentage = (completedTasks.length / tasks.length) * 100;
-
-            if (decrementPercentage) {
-                progressPercentage -= (100 / tasks.length);
-            }
-
-            progressBar.css('width', `${progressPercentage}%`);
-            progressBar.attr('aria-valuenow', progressPercentage);
-            progressBar.text(`${progressPercentage.toFixed(0)}%`);
-        }
-
-        function showAddProjectModal() {
-            $('#addProjectModal').modal('show');
-        }
-
-        function addNewProject() {
-            const projectName = $('#projectNameInput').val().trim();
-
-            if (projectName !== '') {
-                $.ajax({
-                    url: '/administration/public/projects', // Replace with the actual URL to add a new project
-                    type: 'POST',
-                    data: {
-                        name: projectName,
-                        // Add any other necessary data for creating a new project
-                    },
-                    success: function(response) {
-                        loadProjects();
-                        $('#addProjectModal').modal('hide');
-                        $('#projectNameInput').val('');
-                    },
-                    error: function() {
-                        alert('Error adding new project');
-                    }
-                });
-            }
-        }
-
-        function deleteProject(deleteIcon) {
-            const projectContainer = deleteIcon.closest('.project-container');
-            projectContainer.remove();
-        }
-    </script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
