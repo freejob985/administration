@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>قائمة المهام</title>
     <link rel="stylesheet" href="task.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-.project-container {
-    max-height: 80vh; /* تحديد الارتفاع الأقصى لمحتوى المشروع */
-    overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
-}
+        .project-container {
+            max-height: 80vh; /* تحديد الارتفاع الأقصى لمحتوى المشروع */
+            overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
+        }
         .completed {
             background-color: #c8ffe0 !important;
             text-decoration: line-through;
@@ -34,7 +36,7 @@
             flex-wrap: wrap;
             align-items: center;
         }
-   ::-webkit-scrollbar {
+        ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
@@ -51,91 +53,69 @@
         ::-webkit-scrollbar-track {
             background-color: #f1f1f1;
         }
-/* ضبط الارتفاع للعنصر الحاوي للمشاريع */
-.project-row {
-    min-height: calc(100vh - 200px); /* 200px هو ارتفاع الفوتر تقريبًا */
-}
+        /* ضبط الارتفاع للعنصر الحاوي للمشاريع */
+        .project-row {
+            min-height: calc(100vh - 200px); /* 200px هو ارتفاع الفوتر تقريبًا */
+        }
 
-/* تنسيق لمحتوى المشروع */
-.project-container {
-    max-height: calc(100vh - 200px); /* تحديد الارتفاع الأقصى لمحتوى المشروع */
-    overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
-}
-.project-name.bg-warning.text-white.fw-bold.py-2.rounded.mb-3 {
-    color: black !important;
-}
-body {
-    position: relative; /* تحديد موضع العنصر الجسم */
-    min-height: 100vh; /* تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
-    padding-bottom: 150px; /* إضافة هامش أسفل لعدم تغطية الفوتر */
-}
+        /* تنسيق لمحتوى المشروع */
+        .project-container {
+            max-height: calc(100vh - 200px); /* تحديد الارتفاع الأقصى لمحتوى المشروع */
+            overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
+        }
+        .project-name.bg-warning.text-white.fw-bold.py-2.rounded.mb-3 {
+            color: black !important;
+        }
+        body {
+            position: relative; /* تحديد موضع العنصر الجسم */
+            min-height: 100vh; /* تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
+            padding-bottom: 150px; /* إضافة هامش أسفل لعدم تغطية الفوتر */
+        }
 
-.project-row {
-    height: calc(100vh - 150px - 60px); /* تحديد الارتفاع بعد طرح ارتفاع الفوتر وبعض المساحة الإضافية */
-    overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
-}
+        .project-row {
+            height: calc(100vh - 150px - 60px); /* تحديد الارتفاع بعد طرح ارتفاع الفوتر وبعض المساحة الإضافية */
+            overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
+        }
 
-.footer-container {
-    height: 150px; /* تحديد ارتفاع الفوتر */
-}
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        .footer-container {
+            height: 150px; /* تحديد ارتفاع الفوتر */
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-header h1 {
-    font-family: 'Amiri', serif;
-    font-weight: 700;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-header.bg-primary.text-white.py-3.mb-4 {
-    background: #f0f0f0 !important;
-    box-shadow: 1px 3px #bababa;
-}
-h1.text-center.mb-0 {
-    color: black;
-}
+        header h1 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        header.bg-primary.text-white.py-3.mb-4 {
+            background: #f0f0f0 !important;
+            box-shadow: 1px 3px #bababa;
+        }
+        h1.text-center.mb-0 {
+            color: black;
+        }
     </style>
 </head>
 <body>
 
-{{-- <header class="bg-primary text-white py-3 mb-4">
-    <div class="container">
-        <h1 class="text-center mb-0">TASKS</h1>
-    </div>
+    {{-- <header class="bg-primary text-white py-3 mb-4">
+        <div class="container">
+            <h1 class="text-center mb-0">TASKS</h1>
+        </div>
+        <br>
+        <br>
+    </header> --}}
     <br>
-    <br>
-</header> --}}
- <br>
     <br>
     <div class="container-fluid">
-        <div class="row project-row">
-
-            <div class="col-md-4">
-                <div class="project-container mb-4">
-                    <div class="project-name bg-warning text-white fw-bold py-2 rounded mb-3" style="font-family: 'Changa', sans-serif;">
-                        <i class="fas fa-times text-danger delete-project" onclick="deleteProject(this)"></i>
-                    </div>
-                    <div class="project-name bg-warning text-white fw-bold py-2 rounded mb-3" style="font-family: 'Changa', sans-serif;">اسم المشروع 1</div>
-                    <div class="task-list">
-                        <!-- مربع النص -->
-                        <div class="mb-3">
-                            <input type="text" class="form-control newTaskInput" placeholder="أدخل المهمة الجديدة" onkeyup="addNewTaskOnEnter(event, this, 'sortable1')">
-                        </div>
-                        <div class="progress mb-3">
-                            <div class="progress-bar" id="progressBar1" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                        </div>
-                        <div id="sortable1" class="sortable">
-                            <!-- التاسكات -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="col-md-1"></div> --}}
-
+        <div class="row project-row" id="projectsContainer">
+            <!-- Projects will be loaded here -->
         </div>
     </div>
 
@@ -144,17 +124,17 @@ h1.text-center.mb-0 {
     </div> --}}
 
 
-<div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1;">
-    <div class="d-flex justify-content-center">
-        <button class="btn btn-primary btn-lg me-3">زر 1</button>
-        <button class="btn btn-secondary btn-lg me-3">زر 2</button>
-        <button class="btn btn-success btn-lg me-3">زر 3</button>
-        <button class="btn btn-danger btn-lg me-3">زر 4</button>
+    <div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1;">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary btn-lg me-3">زر 1</button>
+            <button class="btn btn-secondary btn-lg me-3">زر 2</button>
+            <button class="btn btn-success btn-lg me-3">زر 3</button>
+            <button class="btn btn-danger btn-lg me-3">زر 4</button>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addProjectModal" onclick="showAddProjectModal()">إضافة مشروع جديد</button>
+        </div>
     </div>
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addProjectModal" onclick="showAddProjectModal()">إضافة مشروع جديد</button>
-    </div>
-</div>
 
 
     <!-- Modal for Adding Project -->
@@ -187,10 +167,33 @@ h1.text-center.mb-0 {
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Initialize Draggable.js
-        $(function() {
+        $(document).ready(function() {
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+            // Load projects from the server
+            loadProjects();
+
+            // Initialize Sortable.js
             initializeSortable();
         });
+
+        function loadProjects() {
+            $.ajax({
+                url: '/administration/public/projects', // Replace with the actual URL to fetch projects
+                type: 'GET',
+                success: function(response) {
+                    $('#projectsContainer').html(response);
+                    initializeSortable();
+                },
+                error: function() {
+                    alert('Error loading projects');
+                }
+            });
+        }
 
         function initializeSortable() {
             $(".sortable").sortable({
@@ -235,37 +238,37 @@ h1.text-center.mb-0 {
             }
         }
 
-function addNewTask(input, sortableId) {
-    const newTaskInput = input;
-    const newTaskText = newTaskInput.value.trim();
+        function addNewTask(input, sortableId) {
+            const newTaskInput = input;
+            const newTaskText = newTaskInput.value.trim();
 
-    if (newTaskText !== '') {
-        const taskList = $(`#${sortableId}`);
-        const newTask = document.createElement('div');
-        newTask.className = 'task d-flex align-items-center bg-white rounded shadow-sm mb-2 p-2 draggable';
-        newTask.innerHTML = `
-            <label class="d-flex align-items-center mb-0" onclick="deleteTask(event, this)">
-                <i class="fas fa-times text-danger"></i>
-            </label>
-            <div class="delete-icon ms-auto">
-                <input type="checkbox" class="me-2" onchange="toggleTaskCompletion(this)">
-                <span class="task-text me-2" onclick="toggleTaskCompletionText(this)">${newTaskText}</span>
-            </div>
-        `;
+            if (newTaskText !== '') {
+                const taskList = $(`#${sortableId}`);
+                const newTask = document.createElement('div');
+                newTask.className = 'task d-flex align-items-center bg-white rounded shadow-sm mb-2 p-2 draggable';
+                newTask.innerHTML = `
+                    <label class="d-flex align-items-center mb-0" onclick="deleteTask(event, this)">
+                        <i class="fas fa-times text-danger"></i>
+                    </label>
+                    <div class="delete-icon ms-auto">
+                        <input type="checkbox" class="me-2" onchange="toggleTaskCompletion(this)">
+                        <span class="task-text me-2" onclick="toggleTaskCompletionText(this)">${newTaskText}</span>
+                    </div>
+                `;
 
-        newTask.addEventListener('click', function() {
-            const checkbox = this.querySelector('input[type="checkbox"]');
-            checkbox.checked = !checkbox.checked;
-            toggleTaskCompletion(checkbox);
-        });
+                newTask.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    toggleTaskCompletion(checkbox);
+                });
 
-        taskList.append(newTask);
-        newTaskInput.value = '';
+                taskList.append(newTask);
+                newTaskInput.value = '';
 
-        updateProgressBar(taskList);
-        initializeSortable(); // Re-initialize Sortable for the new list
-    }
-}
+                updateProgressBar(taskList);
+                initializeSortable(); // Re-initialize Sortable for the new list
+            }
+        }
 
         // Function to update progress bar
         function updateProgressBar(sortableList, decrementPercentage = false) {
@@ -287,45 +290,28 @@ function addNewTask(input, sortableId) {
             $('#addProjectModal').modal('show');
         }
 
-  function addNewProject() {
-    const projectName = $('#projectNameInput').val().trim();
+        function addNewProject() {
+            const projectName = $('#projectNameInput').val().trim();
 
-    if (projectName !== '') {
-        // إنشاء عنصر جديد لمشروع جديد
-        const newProjectContainer = document.createElement('div');
-        newProjectContainer.className = 'col-md-4';
-        const sortableId = 'sortable' + new Date().getTime(); // معرف فريد للقائمة الجديدة
-        newProjectContainer.innerHTML = `
-            <div class="project-container mb-4">
-                <div class="project-name bg-warning text-white fw-bold py-2 rounded mb-3" style="font-family: 'Changa', sans-serif;">
-                    <i class="fas fa-times text-danger delete-project" onclick="deleteProject(this)"></i>
-                </div>
-                <div class="project-name bg-warning text-white fw-bold py-2 rounded mb-3" style="font-family: 'Changa', sans-serif;">${projectName}</div>
-                <div class="task-list">
-                    <div class="mb-3">
-                        <input type="text" class="form-control newTaskInput" placeholder="أدخل المهمة الجديدة" onkeyup="addNewTaskOnEnter(event, this, '${sortableId}')">
-                    </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                    </div>
-                    <div id="${sortableId}" class="sortable"></div>
-                </div>
-            </div>
-        `;
-
-        // إضافة المشروع الجديد إلى الصفحة
-        const projectsRow = document.querySelector('.project-row');
-        projectsRow.appendChild(newProjectContainer);
-
-        // إعادة تهيئة Sortable للقائمة الجديدة
-        const newSortableList = document.querySelector(`#${sortableId}`);
-        initializeSortable();
-
-        // إغلاق النموذج
-        $('#addProjectModal').modal('hide');
-        $('#projectNameInput').val('');
-    }
-}
+            if (projectName !== '') {
+                $.ajax({
+                    url: '/administration/public/projects', // Replace with the actual URL to add a new project
+                    type: 'POST',
+                    data: {
+                        name: projectName,
+                        // Add any other necessary data for creating a new project
+                    },
+                    success: function(response) {
+                        loadProjects();
+                        $('#addProjectModal').modal('hide');
+                        $('#projectNameInput').val('');
+                    },
+                    error: function() {
+                        alert('Error adding new project');
+                    }
+                });
+            }
+        }
 
         function deleteProject(deleteIcon) {
             const projectContainer = deleteIcon.closest('.project-container');

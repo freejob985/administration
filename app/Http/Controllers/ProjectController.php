@@ -19,9 +19,8 @@ class ProjectController extends Controller
 
    public function task()
     {
-        $projects = Project::all();
-
-        return view('pag.task', compact('projects')); // عرض البيانات في العرض المناسب
+  $projects = Project::with('tasks')->get();
+    return view('projects.index', compact('projects'));
     }
 
     /**

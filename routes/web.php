@@ -18,6 +18,7 @@ use App\Http\Controllers\ProjectController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/task', [taskController::class, 'task'])->name('mental.index');
 
 Route::get('/projects', [ProjectController::class, 'task'])->name('tasks.index');
 Route::get('/mental', [taskController::class, 'mental'])->name('mental.index');
