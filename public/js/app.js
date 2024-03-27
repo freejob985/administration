@@ -61,7 +61,31 @@ function toggleTaskCompletion(checkbox) {
 
 function toggleTaskCompletionByClick(taskElement) {
     const checkbox = taskElement.querySelector('input[type="checkbox"]');
-    toggleTaskCompletion(checkbox);
+    const isCompleted = taskElement.classList.contains('completed');
+
+    // Toggle the completed class based on the current state
+    taskElement.classList.toggle('completed');
+
+    // Update the checkbox state
+    checkbox.checked = !isCompleted;
+
+    // Update the progress bar
+    const sortableList = taskElement.closest('.sortable');
+    updateProgressBar(sortableList);
+
+    // Send an AJAX request to update the task status on the server
+    const taskId = taskElement.id.replace('task-', '');
+    $.ajax({
+        url: `/administration/public/tasks/${taskId}`,
+        type: 'PUT',
+        data: {
+            completed: !isCompleted ? 1 : 0,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        error: function() {
+            alert('Error updating task status');
+        }
+    });
 }
 
 // Function to delete task
