@@ -3,7 +3,8 @@
         <div class="project-name bg-warning text-white fw-bold py-2 rounded" style="font-family: 'Changa', sans-serif;">
 
 <img src="https://icons.iconarchive.com/icons/aha-soft/free-3d-printer/72/Project-icon.png">
-{{ $project->name }}
+
+<a href="{{ route('mental.index', [$project->id]) }}" id="linke-titel">{{ $project->name }}</a>
         </div>
         <button class="btn btn-danger" onclick="deleteProject(this)">
             <i class="fas fa-times"></i>

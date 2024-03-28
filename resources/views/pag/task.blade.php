@@ -148,6 +148,10 @@
     background-color: #44b89d !important;
     transition: var(--bs-progress-bar-transition);
 }
+a#linke-titel {
+    color: black !important;
+    text-decoration: auto!important;
+}
     </style>
 </head>
 <body>

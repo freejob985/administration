@@ -13,7 +13,10 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
 
+Route::get('/mental/{id}', [TaskController::class, 'mental'])->name('mental.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
 Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
 Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+Route::post('/tasks/{task}/update-position', [TaskController::class, 'updatePosition'])->name('tasks.update-position');
