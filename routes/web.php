@@ -16,7 +16,8 @@ Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
 Route::get('/mental/{id}', [TaskController::class, 'mental'])->name('mental.index');
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
 
-Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');
-Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+Route::post('/projects/{project}/tasks', [TaskController::class, 'storeTask'])->name('tasks.store');
+Route::delete('/tasks/{task}', [TaskController::class, 'destroyTask'])->name('tasks.destroy');
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 Route::post('/tasks/{task}/update-position', [TaskController::class, 'updatePosition'])->name('tasks.update-position');
+Route::post('/labels', [TaskController::class, 'storeLabel']);

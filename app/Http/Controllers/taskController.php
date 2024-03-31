@@ -4,21 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\Project;
+use App\Models\Label;
 use Illuminate\Http\Request;
+use session;
 
 class TaskController extends Controller
 {
-    public function task()
+
+
+
+
+   public function task()
     {
         return view('pag.task'); // عرض البيانات في العرض المناسب
     }
 
     public function mental($id)
     {
-        return view('pag.mental', compact('id')); // عرض البيانات في العرض المناسب
+
+
+        session()->put('projects', $id);
+        $tasks = Task::where('project_id', $id)->get();
+        return view('pag.mental', compact('tasks'));
     }
 
-    public function store(Request $request, Project $project)
+    public function storeTask(Request $request, Project $project)
     {
         $task = new Task();
         $task->name = $request->input('name');
@@ -37,23 +47,22 @@ class TaskController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function destroy(Task $task)
+    public function destroyTask(Task $task)
     {
         $task->delete();
 
         return response()->json(['success' => true]);
     }
 
-    public function update(Request $request, Task $task)
+    public function storeLabel(Request $request)
     {
-        $task->completed = $request->input('completed');
-        $task->save();
-
-        return response()->json(['success' => true]);
-    }
-
-    public function notebook()
-    {
-        return view('pag.notebook'); // عرض البيانات في العرض المناسب
+        $label = new Label;
+        $label->text = $request->input('text');
+        $label->projects = session()->get('projects');
+        $label->type = $request->input('type');
+        $label->data_x = $request->input('data_x');
+        $label->data_y = $request->input('data_y');
+        $label->save();
+        return response()->json(['id' => $label->id]);
     }
 }
