@@ -1,6 +1,8 @@
 let currentCard;
 let ideaCount = 0;
 let mistakesCount = 0;
+let requirementsCount = 0;
+let numberCount = 0;
 
 // وظائف للتعامل مع حركة السحب والإفلات
 function dragStart(e) {
@@ -47,6 +49,12 @@ function createCard(className, title, hasBadge = false) {
     } else if (className === 'mistakes-card') {
         mistakesCount++;
         badgeNumber = mistakesCount;
+    } else if (className === 'requirements-card') {
+        requirementsCount++;
+        badgeNumber = requirementsCount;
+    } else if (className === 'number-card') {
+        numberCount++;
+        badgeNumber = numberCount;
     }
     if (hasBadge) {
         newElement.innerHTML = '<h2 class="card-title ' + className + '-title">' + title + '<span class="badge">' + badgeNumber + '</span></h2>';
@@ -97,21 +105,21 @@ function createCard(className, title, hasBadge = false) {
 // وظيفة لحذف البطاقة
 function deleteCard(event) {
     const card = event.currentTarget;
-    const taskId = card.dataset.task;
+    const labelId = card.dataset.label;
 
-    if (taskId) {
+    if (labelId) {
         $.ajax({
-            url: `/administration/public/tasks/${taskId}`,
+            url: `/administration/public/labels/${labelId}`,
             type: 'DELETE',
             data: {
                 _token: csrfToken // استخدام رمز CSRF المخزن في المتغير العام
             },
             success: function(response) {
-                console.log('Task deleted successfully');
+                console.log('Label deleted successfully');
                 card.remove();
             },
             error: function() {
-                console.error('Error deleting task');
+                console.error('Error deleting label');
             }
         });
     } else {
@@ -130,16 +138,41 @@ function dragMoveListener(event) {
     target.setAttribute('data-y', y);
 
     // تحديث إحداثيات البطاقة في قاعدة البيانات
-    const taskId = target.dataset.task;
+    const labelId = target.dataset.label;
+    if (labelId) {
+        updatePosition(labelId, x, y);
+    }
+
+  const taskId = target.dataset.task;
     if (taskId) {
-        updatePosition(taskId, x, y);
+  updatePositiontask(taskId, x, y);
     }
 }
 
-// وظيفة لتحديث إحداثيات البطاقة في قاعدة البيانات
-function updatePosition(taskId, x, y) {
+
+function updatePositiontask(labelId, x, y) {
     $.ajax({
-        url: `/administration/public/tasks/${taskId}/update-position`,
+        url: `/administration/public/tasks/${labelId}/update-position`,
+        type: 'POST',
+        data: {
+            _token: csrfToken, // استخدام رمز CSRF المخزن في المتغير العام
+            data_x: x,
+            data_y: y
+        },
+        success: function(response) {
+            console.log('Position updated successfully');
+        },
+        error: function() {
+            console.error('Error updating position');
+        }
+    });
+}
+
+
+// وظيفة لتحديث إحداثيات البطاقة في قاعدة البيانات
+function updatePosition(labelId, x, y) {
+    $.ajax({
+        url: `/administration/public/labels/${labelId}/update-position`,
         type: 'POST',
         data: {
             _token: csrfToken, // استخدام رمز CSRF المخزن في المتغير العام

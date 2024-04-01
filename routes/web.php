@@ -21,3 +21,15 @@ Route::delete('/tasks/{task}', [TaskController::class, 'destroyTask'])->name('ta
 Route::put('/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
 Route::post('/tasks/{task}/update-position', [TaskController::class, 'updatePosition'])->name('tasks.update-position');
 Route::post('/labels', [TaskController::class, 'storeLabel']);
+// ...
+
+Route::delete('/labels/{label}', [TaskController::class, 'destroyLabel'])->name('labels.destroy');
+Route::post('/labels/{label}/update-position', [TaskController::class, 'updateLabelPosition'])->name('labels.update-position');
+
+
+Route::get('/labels/{type}', [TaskController::class, 'getLabelsByType']);
+Route::get('/labels/all', [TaskController::class, 'labels']);
+
+
+
+// ...

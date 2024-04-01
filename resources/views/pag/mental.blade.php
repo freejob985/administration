@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قائمة جانبية</title>
+    <title>لوحة العمل</title>
     <!-- تضمين ملفات CSS الضرورية -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -191,12 +191,38 @@
         </div>
     @endforeach
 
-    <div id="save-code-popup-parent"></div>
-    <div class="card idea-card" draggable="true" ondblclick="deleteCard(event)" data-x="1760" data-y="630" style="transform: translate(1760px, 630px);">
-        <h2 class="card-title idea-card-title">فكرة<span class="badge">1</span></h2>
-    </div>
-    <div class="card requirements-card" draggable="true" ondblclick="deleteCard(event)"  data-x="280" data-y="363.75" style="transform: translate(280px, 363.75px);">
-        <h2 class="card-title requirements-card-title">شسي</h2>
-    </div>
+
+
+
+        <!-- عرض بطاقات الأفكار (idea-card-title) -->
+        @foreach ($ideaLabels as $label)
+            <div class="card idea-card" draggable="true" ondblclick="deleteCard(event)" data-label="{{ $label->id }}" data-x="{{ $label->data_x }}" data-y="{{ $label->data_y }}" style="transform: translate({{ $label->data_x }}px, {{ $label->data_y }}px);">
+                <h2 class="card-title idea-card-title">{{ $label->text }}</h2>
+            </div>
+        @endforeach
+
+        <!-- عرض بطاقات المتطلبات (requirements-card) -->
+        @foreach ($requirementsLabels as $label)
+            <div class="card requirements-card" draggable="true" ondblclick="deleteCard(event)" data-label="{{ $label->id }}" data-x="{{ $label->data_x }}" data-y="{{ $label->data_y }}" style="transform: translate({{ $label->data_x }}px, {{ $label->data_y }}px);">
+                <h2 class="card-title requirements-card-title">{{ $label->text }}</h2>
+            </div>
+        @endforeach
+
+        <!-- عرض بطاقات الأخطاء (mistakes-card) -->
+        @foreach ($mistakesLabels as $label)
+            <div class="card mistakes-card" draggable="true" ondblclick="deleteCard(event)" data-label="{{ $label->id }}" data-x="{{ $label->data_x }}" data-y="{{ $label->data_y }}" style="transform: translate({{ $label->data_x }}px, {{ $label->data_y }}px);">
+                <h2 class="card-title mistakes-card-title">{{ $label->text }}</h2>
+            </div>
+        @endforeach
+
+        <!-- عرض بطاقات الأرقام (number-card) -->
+        @foreach ($numberLabels as $label)
+            <div class="card number-card" draggable="true" ondblclick="deleteCard(event)" data-label="{{ $label->id }}" data-x="{{ $label->data_x }}" data-y="{{ $label->data_y }}" style="transform: translate({{ $label->data_x }}px, {{ $label->data_y }}px);">
+                <h2 class="card-title number-card-title">{{ $label->text }}</h2>
+            </div>
+        @endforeach
+ <div id="save-code-popup-parent"></div>
+
+
 </body>
 </html>

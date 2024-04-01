@@ -13,7 +13,13 @@ class TaskController extends Controller
 
 
 
+  public function update(Request $request, Task $task)
+    {
+        $task->completed = $request->input('completed');
+        $task->save();
 
+        return response()->json(['success' => true]);
+    }
    public function task()
     {
         return view('pag.task'); // عرض البيانات في العرض المناسب
@@ -25,7 +31,12 @@ class TaskController extends Controller
 
         session()->put('projects', $id);
         $tasks = Task::where('project_id', $id)->get();
-        return view('pag.mental', compact('tasks'));
+        // $tasks = Task::where('project_id', $id)->get();
+        $ideaLabels = Label::where('type', 'idea')->where('projects',$id)->get();
+        $mistakesLabels = Label::where('type', 'mistakes')->where('projects',$id)->get();
+        $numberLabels = Label::where('type', 'number')->where('projects',$id)->get();
+        $requirementsLabels = Label::where('type', 'requirements')->where('projects',$id)->get();
+        return view('pag.mental', compact('tasks','ideaLabels','mistakesLabels','numberLabels','requirementsLabels'));
     }
 
     public function storeTask(Request $request, Project $project)
@@ -65,4 +76,40 @@ class TaskController extends Controller
         $label->save();
         return response()->json(['id' => $label->id]);
     }
+public function destroyLabel(Label $label)
+{
+    $label->delete();
+
+    return response()->json(['success' => true]);
+}
+
+public function updateLabelPosition(Request $request, Label $label)
+{
+    $label->data_x = $request->input('data_x');
+    $label->data_y = $request->input('data_y');
+    $label->save();
+
+    return response()->json(['success' => true]);
+}
+
+public function getLabelsByType($type)
+{
+    $labels = Label::where('type', $type)->get();
+    return response()->json($labels);
+}
+
+
+public function all()
+{
+    $labels = Label::where('type', $type)->where('projects',$lang)->get();
+        return view('pag.mental', compact('tasks'));
+
+    // return response()->json($labels);
+}
+
+
+
+
+
+
 }
