@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TablesController;
 use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
@@ -33,3 +34,4 @@ Route::get('/labels/all', [TaskController::class, 'labels']);
 
 
 // ...
+Route::get('/Tables/{id}', [TablesController::class, 'Tables'])->name('Tables.index');
