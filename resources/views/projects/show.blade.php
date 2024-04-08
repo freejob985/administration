@@ -5,6 +5,8 @@
 <img src="https://icons.iconarchive.com/icons/aha-soft/free-3d-printer/72/Project-icon.png">
 
 <a href="{{ route('mental.index', [$project->id]) }}" id="linke-titel">{{ $project->name }}</a>
+  &nbsp;
+
         </div>
         <button class="btn btn-danger" onclick="deleteProject(this)">
             <i class="fas fa-times"></i>
@@ -18,7 +20,7 @@
             @php
                 $totalTasks = $project->tasks->count();
                 $completedTasks = $project->tasks->where('completed', true)->count();
-                $progressPercentage = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
+            $progressPercentage = $totalTasks > 0 ? round(($completedTasks / $totalTasks) * 100) : 0;
             @endphp
             <div class="progress-bar" role="progressbar" style="width: {{ $progressPercentage }}%;" aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100">{{ $progressPercentage }}%</div>
         </div>
@@ -33,7 +35,10 @@
                     <span class="task-text me-2">{{ $task->name }}</span>
                 </div>
             </div>
+
             @endforeach
+<a class="btn btn-primary" href="{{ route('Tables.index', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;">Secondary Button</a>
+
         </div>
     </div>
 </div>

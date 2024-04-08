@@ -147,6 +147,7 @@ function updateProgressBar(sortableList, decrementPercentage = false) {
     if (decrementPercentage) {
         progressPercentage -= (100 / tasks.length);
     }
+    progressPercentage = Math.round(progressPercentage); // تقريب النسبة إلى أقرب عدد صحيح
 
     progressBar.css('width', `${progressPercentage}%`);
     progressBar.attr('aria-valuenow', progressPercentage);

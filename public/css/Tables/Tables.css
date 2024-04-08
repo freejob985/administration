@@ -1,0 +1,153 @@
+   /* Add custom styles here */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            /* تجنب ظهور شريط التمرير أفقيًا */
+            background-color: #f8f9fa;
+            /* لون خلفية الصفحة */
+        }
+
+        .menu {
+            position: fixed;
+            top: -80px;
+            /* أخفاء القائمة في البداية */
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            /* لون خلفية القائمة */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            /* تأكد من أن القائمة فوق العناصر الأخرى */
+            transition: top 0.3s;
+            /* إضافة حركة ناعمة للانتقال */
+        }
+
+        .menu.show {
+            top: 0;
+            /* ظهور القائمة عند التمرير للأعلى */
+        }
+
+        .menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .menu ul li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            color: #333333;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu ul li a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            /* تحديد توجيه العناصر إلى عمودي */
+            background-color: #f8f9fa;
+            /* لون خلفية الجدول */
+            padding: 20px;
+            /* إضافة تباعد داخلي للحافة الخارجية للجدول */
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            /* تحديد عرض الجدول */
+            border-radius: 8px;
+            /* إضافة تقويس للحواف */
+            overflow: hidden;
+            /* تجنب تسريب الزوايا في حالة التقويس */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* إضافة ظل للجدول */
+            background-color: #ffffff;
+            /* لون خلفية الجدول */
+            margin-bottom: 20px;
+            /* تباعد بين الجداول والعنوان */
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 15px;
+            /* تحديد الهوامش الداخلية للخلايا */
+            border-bottom: 1px solid #dee2e6;
+            /* خط تحت كل صف */
+            text-align: left;
+            /* محاذاة النص إلى اليسار */
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            /* لون خلفية رأس الجدول */
+            border-bottom: 2px solid #dee2e6;
+            /* خط أسفل عنوان العمود */
+            font-weight: 500;
+            /* سمك النص */
+        }
+
+        .table-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            /* جعل عنوان الجدول في المنتصف */
+        }
+
+        /* إضافة الشكل الدائري للأيقونة */
+        .create-icon {
+            background-color: #007bff;
+            /* لون الخلفية للأيقونة */
+            color: #ffffff;
+            /* لون الأيقونة نفسها */
+            border-radius: 50%;
+            /* جعل الزوايا دائرية */
+            padding: 10px;
+            /* تباعد داخلي للأيقونة */
+            display: inline-block;
+            /* جعل الأيقونة ذات عرض وارتفاع محسوب */
+            text-align: center;
+            /* محاذاة النص إلى الوسط */
+            cursor: pointer;
+            /* تحويل المؤشر إلى علامة الاختيار */
+            transition: background-color 0.3s;
+            /* تحريك ناعم لتغيير لون الخلفية */
+            width: 50px;
+            /* عرض الأيقونة */
+            height: 50px;
+            /* ارتفاع الأيقونة */
+            line-height: 50px;
+            /* تحديد ارتفاع السطر لمحاذاة النص في الوسط */
+            font-size: 24px;
+            /* حجم الأيقونة */
+        }
+
+        .create-icon:hover {
+            background-color: #0056b3;
+            /* لون الخلفية عند تحويل المؤشر */
+        }
+
+        /* تعديل عرض الأزرار ليكون أفقياً */
+        .btn {
+            display: inline-block;
+            margin: 0 5px;
+        }
+tr{
+background: white;
+}

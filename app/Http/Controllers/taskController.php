@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Project;
-use App\Models\Label;
-use Illuminate\Http\Request;
+use DB;
 use session;
+use App\Models\Task;
+use App\Models\Label;
+use App\Models\Project;
+use App\Models\schedule;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
 
+   public function Lansori()
+    {
+        return view('pag.Lansori'); // عرض البيانات في العرض المناسب
+    }
+   public function Artificial()
+    {
+        return view('pag.Artificial'); // عرض البيانات في العرض المناسب
+    }
 
 
   public function update(Request $request, Task $task)
@@ -45,6 +55,24 @@ class TaskController extends Controller
         $task->name = $request->input('name');
         $task->project_id = $project->id;
         $task->save();
+
+
+
+
+        $task = new schedule();
+        $task->name = $request->input('name');
+        $task->project_id = $project->id;
+        $task->save();
+
+
+
+// DB::table('schedule')->insert([
+//     'name' => $request->input('name'), // قيمة مطلوبة: استبدلها بالقيمة التي تريدها
+//     'project_id ' => $project->id, // قيمة مطلوبة: استبدلها بالقيمة التي تريدها
+// ]);
+
+
+
 
         return response()->json(['success' => true, 'id' => $task->id]);
     }

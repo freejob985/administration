@@ -10,6 +10,15 @@ Route::get('/', function () {
 });
 
 Route::get('/task', [TaskController::class, 'task'])->name('task.index');
+
+
+
+Route::get('/Lansori', [TaskController::class, 'Lansori'])->name('Lansori.index');
+Route::get('/Artificial', [TaskController::class, 'Artificial'])->name('Artificial.index');
+
+
+
+
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
