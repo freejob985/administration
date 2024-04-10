@@ -65,7 +65,8 @@
                                 <option value="done" @if($item->status == 'done') selected @endif>Done</option>
                             </select>
                         </td>
-                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal">Subtasks</button></td>
+                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-id="{{ $item->id }}">Subtasks</button></td>
+
                         <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
                         <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
                     </tr>
@@ -78,18 +79,10 @@
             @foreach ($Table as $item)
             <div class="table-header">
                 <button class="btn btn-danger btn-sm delete-table-btn"><i class="fas fa-trash"></i></button>
-                <table class="table sortable" data-id="{{ $item->id }}">
-
-
+                <table class="table sortable" data-id="{{ $item->id }}" data-name="{{ $item->name }}">
                     <thead class="thead-dark">
                         <tr>
-
-
-
-
                             <th scope="col" colspan="7" style="color: #fff; background-color: {{ $item->color }}; border-color: #000000; padding: 5px;">{{ $item->name }}</th>
-
-
                         </tr>
                         <tr>
                             <th scope="col">ID</th>
@@ -102,15 +95,44 @@
                         </tr>
                     </thead>
                     <tbody class="sortable ui-sortable">
+                        @if(DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->count() > 0)
+                        @foreach (DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->orderBy('id','desc')->get() as $item_schedule)
+                        <tr>
+                            <th scope="row">{{ $item_schedule->id }}</th>
+                            <td>{{ $item_schedule->name }}</td>
+                            <td>
+                                <div class="priority-container">
+                                    <select class="form-control priority-select" data-id="{{ $item->id }}">
+                                        <option value="low" @if($item_schedule->priority == 'low') selected @endif>Low</option>
+                                        <option value="medium" @if($item_schedule->priority == 'medium') selected @endif>Medium</option>
+                                        <option value="high" @if($item_schedule->priority == 'high') selected @endif>High</option>
+                                    </select>
+                                    <span class="priority-circle"></span>
+                                </div>
+                            </td>
+                            <td>
+                                <select class="form-control status-select" data-id="{{ $item->id }}">
+                                    <option value="todo" @if($item_schedule->status == 'todo') selected @endif>Todo</option>
+                                    <option value="in-progress" @if($item_schedule->status == 'in-progress') selected @endif>In Progress</option>
+                                    <option value="done" @if($item_schedule->status == 'done') selected @endif>Done</option>
+                                </select>
+                            </td>
+                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-id="{{ $item->id }}">Subtasks</button></td>
+
+                            <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
+                            <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
+                        </tr>
+                        @endforeach
+                        @else
                         <tr id="new-row" class="ui-sortable-handle">
                             <td colspan="6"><button class="btn btn-primary btn-sm">New mission schedule</button></td>
                         </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
-
-
             @endforeach
+
 
 
 
@@ -304,16 +326,46 @@
             , cursor: "move"
             , opacity: 0.6
             , zIndex: 10000
-            , delay: 150,
-
-            update: function(event, ui) {
+            , delay: 150
+            , start: function(event, ui) {
+                ui.item.data('table-name', ui.item.closest('table').find('th:first-child').text());
+            }
+            , update: function(event, ui) {
                 $("#new-row").remove();
 
+                var targetTableName = ui.item.closest('.table-header').find('th:first-child').text();
+                var targetTableNamex = ui.item.closest('.table-header').find('table').data('name');
 
+
+                // alert(targetTableNamex);
+
+
+                var sourceTableName = ui.item.data('table-name');
+
+                if (targetTableName !== sourceTableName) {
+                    var newType = targetTableNamex;
+
+                    var scheduleId = ui.item.find('th:first-child').text();
+
+                    $.ajax({
+                        url: '{{ route("schedule.update-type", ":id") }}'.replace(':id', scheduleId)
+                        , type: 'PATCH'
+                        , data: {
+                            type: newType
+                            , _token: $('meta[name="csrf-token"]').attr('content')
+                        }
+                        , success: function(response) {
+                            console.log('Schedule type updated successfully');
+                        }
+                        , error: function(xhr, status, error) {
+                            console.error('Error updating schedule type:', error);
+                        }
+                    });
+                }
             }
-
         }).disableSelection();
     });
+
 
     // Add new subtask
     function addNewSubtask() {
@@ -709,7 +761,6 @@
             }
         });
     });
-
 
 </script>
 

@@ -17,10 +17,10 @@ class TablesController extends Controller
     {
         session()->put('projects', $id);
 
-        $schedule = schedule::where('project_id', $id)->get();
+        $schedule = schedule::where('project_id', $id)->where('type',"Basic")->get();
         $Table = Table::where('project_id', $id)->get();
 
-        return view('pag.Tables', compact('schedule', 'Table'));
+        return view('pag.Tables', compact('schedule', 'Table','id'));
         // return response()->json($labels);
     }
     public function store(Request $request)
@@ -53,6 +53,14 @@ $schedule->update([
 return response()->json($schedule);
 }
 
+   public function updateType(Request $request, Schedule $schedule)
+   {
+   $schedule->update([
+   'type' => $request->input('type'),
+   ]);
+
+   return response()->json($schedule);
+   }
 
 
 }
