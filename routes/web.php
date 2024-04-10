@@ -44,3 +44,12 @@ Route::get('/labels/all', [TaskController::class, 'labels']);
 
 // ...
 Route::get('/Tables/{id}', [TablesController::class, 'Tables'])->name('Tables.index');
+
+
+// Route::post('/tables', 'TablesController@store')->name('tables.store');
+Route::post('/tables', [TablesController::class, 'store']);
+Route::delete('/tables/{table}', [TablesController::class, 'destroy']);
+Route::patch('/schedule/{schedule}', [TablesController::class, 'update']);
+
+// Route::patch('/schedule/{schedule}', 'ScheduleController@update')->name('schedule.update');
+// Route::delete('/tables/{table}', 'TableController@destroy')->name('tables.destroy');

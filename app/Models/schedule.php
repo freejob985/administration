@@ -10,6 +10,6 @@ class schedule extends Model
     use HasFactory;
     protected $table = 'schedule'; // تحديد اسم الجدول هنا
 
-    protected $fillable = ['name', 'project_id', 'type','priority','status'];
+    protected $fillable = ['name', 'project_id', 'type','priority','status','background'];
     public $timestamps = false;
 }

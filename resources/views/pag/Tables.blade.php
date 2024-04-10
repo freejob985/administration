@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Design Table</title>
     <x-alert />
 </head>
 <body>
     <!-- Your menu goes here -->
-    <div class="container">
+    <div class="container" id="top-bar">
         <br>
         <div class="row" style="margin-bottom: 9px;">
             <button class="btn create-icon"><i class="material-icons">add</i></button>
@@ -72,7 +74,52 @@
                 </tbody>
             </table>
 
-            <table class="table sortable">
+
+            @foreach ($Table as $item)
+            <div class="table-header">
+                <button class="btn btn-danger btn-sm delete-table-btn"><i class="fas fa-trash"></i></button>
+                <table class="table sortable" data-id="{{ $item->id }}">
+
+
+                    <thead class="thead-dark">
+                        <tr>
+
+
+
+
+                            <th scope="col" colspan="7" style="color: #fff; background-color: {{ $item->color }}; border-color: #000000; padding: 5px;">{{ $item->name }}</th>
+
+
+                        </tr>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">priority</th>
+                            <th scope="col">status</th>
+                            <th scope="col">Subtasks</th>
+                            <th scope="col">Files</th>
+                            <th scope="col">comments</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sortable ui-sortable">
+                        <tr id="new-row" class="ui-sortable-handle">
+                            <td colspan="6"><button class="btn btn-primary btn-sm">New mission schedule</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            @endforeach
+
+
+
+
+
+
+
+
+            {{-- <table class="table sortable">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col" colspan="7" style="color: #fff;background-color: #2a6198;border-color: #2a6198;padding: 5px;">Develop</th>
@@ -95,7 +142,7 @@
                     </tr>
 
                 </tbody>
-            </table>
+            </table> --}}
         </div>
     </div>
     <!-- Modal for Creating New Table -->
@@ -439,51 +486,86 @@
         var tableColor = $('#tableColorInput').val();
 
         if (tableName && tableColor) {
-            // Create the new table HTML
-            var newTableHTML = `
-            <div class="table-header">
-                <button class="btn btn-danger btn-sm delete-table-btn"><i class="fas fa-trash"></i></button>
-                <table class="table sortable">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" colspan="7" style="color: #fff; background-color: ${tableColor}; border-color: ${tableColor}; padding: 5px;">${tableName}</th>
-                        </tr>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">priority</th>
-                            <th scope="col">status</th>
-                            <th scope="col">Subtasks</th>
-                            <th scope="col">Files</th>
-                            <th scope="col">comments</th>
-                        </tr>
-                    </thead>
-                    <tbody class="sortable">
-                        <tr id="new-row">
+            $.ajax({
+                url: '/administration/public/tables',
 
-                            <td colspan="6"><button class="btn btn-primary btn-sm">New mission schedule</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        `;
+                type: 'POST'
+                , data: {
+                    name: tableName
+                    , color: tableColor
+                    , _token: $('meta[name="csrf-token"]').attr('content')
+                }
+                , success: function(response) {
+                    // Create the new table HTML
+                    var newTableHTML = `
+<div class="table-header">
+    <button class="btn btn-danger btn-sm delete-table-btn"><i class="fas fa-trash"></i></button>
+    <table class="table sortable">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" colspan="7" style="color: #fff; background-color: ${response.color}; border-color: ${response.color}; padding: 5px;">${response.name}</th>
+            </tr>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">priority</th>
+                <th scope="col">status</th>
+                <th scope="col">Subtasks</th>
+                <th scope="col">Files</th>
+                <th scope="col">comments</th>
+            </tr>
+        </thead>
+        <tbody class="sortable">
+            <tr id="new-row">
+                <td colspan="6"><button class="btn btn-primary btn-sm">New mission schedule</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+`;
 
-            // Insert the new table before the last table
-            $('.table-container table:last').before(newTableHTML);
+                    // Insert the new table before the last table
+                    $('.table-container table:last').before(newTableHTML);
 
-            // Clear the form inputs
-            $('#tableNameInput').val('');
-            $('#tableColorInput').val('#000000');
+                    // Clear the form inputs
+                    $('#tableNameInput').val('');
+                    $('#tableColorInput').val('#000000');
 
-            // Close the modal
-            $('#newTableModal').modal('hide');
-            $('.table-container').trigger('table-created');
-
+                    // Close the modal
+                    $('#newTableModal').modal('hide');
+                    $('.table-container').trigger('table-created');
+                }
+                , error: function(xhr, status, error) {
+                    // Handle the error
+                    console.error(error);
+                }
+            });
         }
     });
+
     $('.table-container').on('click', '.delete-table-btn', function() {
-        $(this).closest('.table-header').remove();
+        var $tableHeader = $(this).closest('.table-header');
+        var tableId = $tableHeader.find('table').data('id');
+
+        $.ajax({
+            url: '/administration/public/tables/' + tableId
+
+            , type: 'DELETE'
+            , data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }
+            , success: function(response) {
+                // Remove the table from the page
+                $tableHeader.remove();
+                console.log(response.message);
+            }
+            , error: function(xhr, status, error) {
+                // Handle the error
+                console.error(error);
+            }
+        });
     });
+
 
     $('.table-container').on('table-created', function() {
         $(".sortable tbody").sortable({
@@ -562,6 +644,72 @@
             $this.siblings('.priority-circle').removeClass('low medium high').addClass(priorityClass);
         });
     });
+
+
+    $('.table-container').on('change', '.priority-select, .status-select', function() {
+        var $this = $(this);
+        var scheduleId = $this.data('id');
+        var fieldName = $this.hasClass('priority-select') ? 'priority' : 'status';
+        var fieldValue = $this.val();
+        var otherFieldName = fieldName === 'priority' ? 'status' : 'priority';
+        var otherFieldValue = $this.siblings('.' + otherFieldName + '-select').val();
+
+        $.ajax({
+            url: '/administration/public/schedule/' + scheduleId,
+
+
+            type: 'PATCH'
+            , data: {
+                [fieldName]: fieldValue
+                , [otherFieldName]: otherFieldValue
+                , _token: $('meta[name="csrf-token"]').attr('content')
+            }
+            , success: function(response) {
+                // Update the row's background color based on the status
+                var rowElement = $this.closest('tr');
+                switch (response.status) {
+                    case 'todo':
+                        rowElement.css('background-color', '#f8f9fa');
+                        break;
+                    case 'in-progress':
+                        rowElement.css('background-color', '#ffeeba');
+                        break;
+                    case 'done':
+                        rowElement.css('background-color', '#d4edda');
+                        break;
+                    default:
+                        rowElement.css('background-color', '');
+                }
+            }
+            , error: function(xhr, status, error) {
+                // Handle the error
+                console.error(error);
+            }
+        });
+    });
+    $(document).ready(function() {
+        $('.table-container .status-select').each(function() {
+            var $this = $(this);
+            var selectedStatus = $this.val();
+            var rowElement = $this.closest('tr');
+
+            // Change the color of the row based on the selected status
+            switch (selectedStatus) {
+                case 'todo':
+                    rowElement.css('background-color', '#f8f9fa');
+                    break;
+                case 'in-progress':
+                    rowElement.css('background-color', '#ffeeba');
+                    break;
+                case 'done':
+                    rowElement.css('background-color', '#d4edda');
+                    break;
+                default:
+                    rowElement.css('background-color', '');
+            }
+        });
+    });
+
 
 </script>
 
