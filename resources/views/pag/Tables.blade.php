@@ -200,22 +200,35 @@
     <div class="modal fade left" id="subtasksModal" tabindex="-1" role="dialog" aria-labelledby="subtasksModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: blue; color: white;">
+                <div class="modal-header" style="background-color: #4285f4; color: white;">
+
                     <h5 class="modal-title" id="subtasksModalLabel">Subtasks</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="sortable-list">
                     <!-- Subtasks content goes here -->
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card draggable">
+                        <div class="card-body d-flex align-items-center justify-content-between">
                             <div class="form-check d-flex align-items-center">
                                 <input type="checkbox" id="subtaskCheckbox1" class="form-check-input mr-3" style="transform: scale(1.5);">
                                 <label for="subtaskCheckbox1" class="form-check-label mb-0" style="font-size: 1.2em;">Subtask 1 description</label>
                             </div>
+                            <i class="fas fa-trash delete-icon"></i>
                         </div>
                     </div>
+                    <div class="card draggable">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" id="subtaskCheckbox2" class="form-check-input mr-3" style="transform: scale(1.5);">
+                                <label for="subtaskCheckbox2" class="form-check-label mb-0" style="font-size: 1.2em;">Subtask 2 description</label>
+                            </div>
+                            <i class="fas fa-trash delete-icon"></i>
+                        </div>
+                    </div>
+                    <!-- Add your other subtasks here -->
+
                     <div class="subtasks">
 
                     </div>
@@ -226,17 +239,20 @@
                             <input type="text" class="form-control" id="newSubtaskInput" onKeyPress="if(event.keyCode==13){addNewSubtask();}">
                         </div>
                     </div>
-
-                    <!-- Progress bar -->
                     <div class="mt-3">
                         <div class="progress-container">
                             <div class="progress-bar" style="width: 0%;">0%</div>
                         </div>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
     </div>
+
+
     <!-- Files Modal -->
     <div class="modal fade left" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="filesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
@@ -294,6 +310,6 @@
 
 </body>
 </html>
-<x-scriptx/>
+<x-scriptx />
 </body>
 </html>

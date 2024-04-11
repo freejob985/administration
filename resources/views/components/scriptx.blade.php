@@ -76,20 +76,22 @@
             var newSubtaskText = $('#newSubtaskInput').val().trim();
             if (newSubtaskText !== '') {
                 var newSubtaskHtml = `
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="form-check d-flex align-items-center">
-                                <input type="checkbox" id="subtaskCheckbox-${$('.card').length + 1}" class="form-check-input mr-3" style="transform: scale(1.5);">
-                                <label for="subtaskCheckbox-${$('.card').length + 1}" class="form-check-label mb-0" style="font-size: 1.2em;">${newSubtaskText}</label>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                $('#subtasksModal .subtasks').append(newSubtaskHtml);
+<div class="card draggable">
+    <div class="card-body d-flex align-items-center justify-content-between">
+        <div class="form-check d-flex align-items-center">
+            <input type="checkbox" id="subtaskCheckbox-${$('.card').length + 1}" class="form-check-input mr-3" style="transform: scale(1.5);">
+            <label for="subtaskCheckbox-${$('.card').length + 1}" class="form-check-label mb-0" style="font-size: 1.2em;">${newSubtaskText}</label>
+        </div>
+        <i class="fas fa-trash delete-icon"></i>
+    </div>
+</div>
+`;
+                $('#sortable-list').append(newSubtaskHtml);
                 $('#newSubtaskInput').val('');
                 updateProgressBar();
             }
         }
+
 
         // تحديث شريط التقدم عند إكمال المهمة الفرعية
         $('#subtasksModal .modal-body').on('change', '.form-check-input', function() {
@@ -345,6 +347,40 @@
                 }
             });
         });
+        $('#subtasksModal .modal-body').on('click', '.card', function() {
+            var $checkbox = $(this).find('.form-check-input');
+            $checkbox.prop('checked', !$checkbox.prop('checked'));
+            $checkbox.trigger('change');
+        });
+
+        $('#subtasksModal .modal-body').on('change', '.form-check-input', function() {
+            var $card = $(this).closest('.card');
+            if ($(this).is(':checked')) {
+                $card.css({
+                    'text-decoration': 'line-through'
+                    , 'background-color': '#9de289'
+                });
+            } else {
+                $card.css({
+                    'text-decoration': 'none'
+                    , 'background-color': 'transparent'
+                });
+            }
+            updateProgressBar();
+        });
 
     </script>
+
+    <script>
+        // تحديد القائمة التي سيتم جعلها قابلة للفرز
+        var sortableList = document.getElementById('sortable-list');
+
+        // تهيئة Sortable.js
+        new Sortable(sortableList, {
+            animation: 150, // مدة الرسم البياني للحركة بالمللي ثانية
+            ghostClass: 'sortable-ghost', // تحديد الفئة للعنصر المؤقت أثناء السحب
+        });
+
+    </script>
+
 </div>

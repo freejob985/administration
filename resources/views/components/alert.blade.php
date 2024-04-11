@@ -164,6 +164,14 @@
             background-color: #9e9e9e;
         }
 
+        .delete-icon {
+            cursor: pointer;
+            color: #dc3545;
+            /* danger color */
+            margin-left: auto;
+            /* Push the icon to the right */
+        }
+
     </style>
 
 
