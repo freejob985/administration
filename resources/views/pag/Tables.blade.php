@@ -67,7 +67,7 @@
                         </td>
                         <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}">Subtasks</button></td>
 
-                        <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
+                        <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item->id }}" >Files</button></td>
                         <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
                     </tr>
                     @endforeach
@@ -119,7 +119,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}">Subtasks</button></td>
 
-                            <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
+                            <td><button class="btn btn-secondary btn-sm filesModal" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item_schedule->id }}">Files</button></td>
                             <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
                         </tr>
                         @endforeach
@@ -141,30 +141,6 @@
 
 
 
-            {{-- <table class="table sortable">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col" colspan="7" style="color: #fff;background-color: #2a6198;border-color: #2a6198;padding: 5px;">Develop</th>
-
-                    </tr>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">priority</th>
-                        <th scope="col">status</th>
-                        <th scope="col">Subtasks</th>
-                        <th scope="col">Files</th>
-                        <th scope="col">comments</th>
-                    </tr>
-                </thead>
-                <tbody class="sortable">
-                    <!-- Sample row, replace with your data using your backend -->
-                    <tr id="new-row">
-                        <td colspan="6"><button class="btn btn-primary btn-sm waves-effect waves-light">New mission schedule</button></td>
-                    </tr>
-
-                </tbody>
-            </table> --}}
         </div>
     </div>
     <!-- Modal for Creating New Table -->
@@ -209,7 +185,7 @@
                 </div>
                 <div class="modal-body" id="sortable-list">
                     <!-- Subtasks content goes here -->
-                    <div class="card draggable">
+                    {{-- <div class="card draggable">
                         <div class="card-body d-flex align-items-center justify-content-between">
                             <div class="form-check d-flex align-items-center">
                                 <input type="checkbox" id="subtaskCheckbox1" class="form-check-input mr-3" style="transform: scale(1.5);">
@@ -226,7 +202,7 @@
                             </div>
                             <i class="fas fa-trash delete-icon"></i>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Add your other subtasks here -->
 
                     <div class="subtasks">
@@ -272,6 +248,11 @@
                     <!-- Filepond file upload section -->
                     <div class="dropzone" id="fileUploadDropzone"></div>
                     <!-- File download section -->
+
+  <div class="mt-3 file-list">
+                        <!-- Files will be displayed here -->
+                    </div>
+
                     <div class="mt-3">
                         <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-pdf"></i> Download PDF</a>
                         <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-word"></i> Download Word</a>

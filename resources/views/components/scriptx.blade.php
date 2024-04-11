@@ -4,26 +4,73 @@
         Dropzone.autoDiscover = false;
 
         // تهيئة Dropzone لرفع الملفات
-        $(document).ready(function() {
-            var myDropzone = new Dropzone("#fileUploadDropzone", {
-                url: "/file/post"
-                , maxFilesize: 5, // بالميجابايت
-                maxFiles: 5
-                , acceptedFiles: ".pdf,.doc,.docx"
-                , dictDefaultMessage: "اسحب الملفات هنا أو انقر لرفعها"
-                , dictFallbackMessage: "متصفحك لا يدعم رفع الملفات بسحبها وإفلاتها."
-                , dictFileTooBig: function(file) {
-                    var maxFileSizeMB = 5;
-                    return "الملف كبير جدًا (" + (file.size / (1024 * 1024)).toFixed(2) + "ميجابايت). الحد الأقصى للملف: " + maxFileSizeMB + "ميجابايت.";
-                }
-                , dictInvalidFileType: "لا يمكنك رفع ملفات من هذا النوع."
-                , dictCancelUpload: "إلغاء"
-                , dictRemoveFile: "إزالة"
-                , headers: {
-                    "Authorization": "Bearer YourAuthTokenHere"
+    $(document).ready(function() {
+var schedule = sessionStorage.getItem("schedule");
+
+        var myDropzone = new Dropzone("#fileUploadDropzone", {
+            url: "{{ route('files.store') }}",
+            maxFilesize: 5, // in MB
+            maxFiles: 5,
+            acceptedFiles: ".pdf,.doc,.docx,.php",
+            dictDefaultMessage: "اسحب الملفات هنا أو انقر لرفعها",
+            dictFallbackMessage: "متصفحك لا يدعم رفع الملفات بسحبها وإفلاتها.",
+            dictFileTooBig: function(file) {
+                var maxFileSizeMB = 5;
+                return "الملف كبير جدًا (" + (file.size / (1024 * 1024)).toFixed(2) + "ميجابايت). الحد الأقصى للملف: " + maxFileSizeMB + "ميجابايت.";
+            },
+            dictInvalidFileType: "لا يمكنك رفع ملفات من هذا النوع.",
+            dictCancelUpload: "إلغاء",
+            dictRemoveFile: "إزالة",
+            headers: {
+                "Authorization": "Bearer YourAuthTokenHere"
+            },
+            params: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+            schedule_id: $('.filesModal').data('schedule-id'),
+            },
+            success: function(file, response) {
+                console.log('File uploaded successfully:', response);
+                fetchAndDisplayFiles($('#filesModal').data('schedule-id'));
+            },
+            error: function(file, response, xhr) {
+                console.error('Error uploading file:', response);
+            }
+        });
+
+        $('#filesModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var scheduleId = button.data('schedule-id');
+            $(this).data('schedule-id', scheduleId);
+
+sessionStorage.setItem("schedule", scheduleId);
+
+
+            fetchAndDisplayFiles(scheduleId);
+        });
+
+        function fetchAndDisplayFiles(scheduleId) {
+            $.ajax({
+                url: '{{ route("files.index", ":id") }}'.replace(':id', scheduleId),
+                type: 'GET',
+                success: function(response) {
+                    $('.file-list').html('');
+                    response.forEach(function(file) {
+                        var fileHtml = `
+                            <div class="mb-3">
+                                <a href="{{ asset('storage/files/') }}/${file.filename}" class="btn btn-primary" target="_blank">
+                                    <i class="fas fa-file"></i> ${file.filename}
+                                </a>
+                            </div>
+                        `;
+                        $('.file-list').append(fileHtml);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching files:', error);
                 }
             });
-        });
+        }
+    });
 
         // تهيئة القدرة على السحب والإفلات للجداول
         $(function() {
@@ -116,12 +163,12 @@ function addNewSubtask() {
             updateProgressBar();
         });
 
-        function updateProgressBar() {
-            var totalSubtasks = $('#subtasksModal .form-check-input').length;
-            var completedSubtasks = $('#subtasksModal .form-check-input:checked').length;
-            var progressPercentage = (completedSubtasks / totalSubtasks) * 100;
-            $('#subtasksModal .progress-bar').css('width', progressPercentage + '%').text(Math.round(progressPercentage) + '%');
-        }
+function updateProgressBar() {
+    var totalSubtasks = $('.subtasks .form-check-input').length;
+    var completedSubtasks = $('.subtasks .form-check-input:checked').length;
+    var progressPercentage = (completedSubtasks / totalSubtasks) * 100;
+    $('#subtasksModal .progress-bar').css('width', progressPercentage + '%').text(Math.round(progressPercentage) + '%');
+}
 
         // إضافة تعليق جديد
         $('#addCommentButton').click(function() {
@@ -402,10 +449,124 @@ function addNewSubtask() {
 
 
 
+// $('#subtasksModal').on('show.bs.modal', function(event) {
+//     var button = $(event.relatedTarget);
+//     var scheduleId = button.data('schedule-id');
+//     $(this).data('schedule-id', scheduleId);
+// });
+
+
+
+
 $('#subtasksModal').on('show.bs.modal', function(event) {
     var button = $(event.relatedTarget);
     var scheduleId = button.data('schedule-id');
     $(this).data('schedule-id', scheduleId);
+
+    $.ajax({
+        url: '{{ route("subtasks.show", ":id") }}'.replace(':id', scheduleId),
+        type: 'GET',
+        success: function(response) {
+            $('.subtasks').html('');
+            var completedSubtasks = '';
+            var incompletedSubtasks = '';
+
+            response.forEach(function(subtask) {
+                var newSubtaskHtml = `
+                    <div class="card draggable ${subtask.condition ? 'completed' : ''}">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" id="subtaskCheckbox-${subtask.id}" class="form-check-input mr-3" style="transform: scale(1.5);" ${subtask.condition ? 'checked' : ''}>
+                                <label for="subtaskCheckbox-${subtask.id}" class="form-check-label mb-0" style="font-size: 1.2em;">${subtask.name}</label>
+                            </div>
+                            <i class="fas fa-trash delete-icon" data-subtask-id="${subtask.id}"></i>
+                        </div>
+                    </div>
+                `;
+
+                if (subtask.condition) {
+                    completedSubtasks += newSubtaskHtml;
+                } else {
+                    incompletedSubtasks += newSubtaskHtml;
+                }
+            });
+
+            $('.subtasks').append(completedSubtasks + incompletedSubtasks);
+            updateProgressBar();
+
+            // Apply the styles to the completed subtasks
+            $('.subtasks .completed .card-body').css({
+                'text-decoration': 'line-through',
+                'background-color': '#9de289',
+                'opacity': '0.5'
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching subtasks:', error);
+        }
+    });
+});
+$('.subtasks').on('click', '.delete-icon', function() {
+    var $this = $(this);
+    var subtaskId = $this.data('subtask-id');
+
+    $.ajax({
+        url: '{{ route("subtasks.destroy", ":id") }}'.replace(':id', subtaskId),
+        type: 'DELETE',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            $this.closest('.card').remove();
+            console.log(response.message);
+        },
+        error: function(xhr, status, error) {
+            console.error('خطأ في حذف التاسك الفرعي:', error);
+        }
+    });
+});
+
+
+function updateSubtaskStatus(subtaskId, condition) {
+    $.ajax({
+        url: '{{ route("subtasks.update", ":id") }}'.replace(':id', subtaskId),
+        type: 'PATCH',
+        data: {
+            condition: condition ? 1 : 0,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            console.log('تم تحديث حالة التاسك الفرعي بنجاح');
+            updateProgressBar();
+        },
+        error: function(xhr, status, error) {
+            console.error('خطأ في تحديث حالة التاسك الفرعي:', error);
+        }
+    });
+}
+
+$('.subtasks').on('change', '.form-check-input', function() {
+    var $this = $(this);
+    var $cardBody = $this.closest('.card-body');
+    var subtaskId = $this.closest('.card').find('.delete-icon').data('subtask-id');
+    var isChecked = $this.is(':checked');
+
+    if (isChecked) {
+        $cardBody.css({
+            'text-decoration': 'line-through',
+            'background-color': '#9de289',
+            'opacity': '0.5'
+        });
+    } else {
+        $cardBody.css({
+            'text-decoration': 'none',
+            'background-color': 'transparent',
+            'opacity': '1'
+        });
+    }
+
+    // تحديث حالة التاسك الفرعي في الخادم
+    updateSubtaskStatus(subtaskId, isChecked);
 });
 
 

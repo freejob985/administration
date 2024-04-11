@@ -44,10 +44,11 @@ public function store(Request $request)
     /**
      * Display the specified resource.
      */
-    public function show(Subtask $subtask)
-    {
-        //
-    }
+public function show($taskId)
+{
+    $subtasks = Subtask::where('task_id', $taskId)->get();
+    return response()->json($subtasks);
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -60,16 +61,24 @@ public function store(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subtask $subtask)
-    {
-        //
-    }
+public function update(Request $request, $id)
+{
+    $subtask = Subtask::findOrFail($id);
+    $subtask->condition = $request->input('condition') ? 1 : 0; // Convert to integer
+    $subtask->save();
+    return response()->json($subtask);
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subtask $subtask)
-    {
-        //
-    }
+public function destroy($id)
+{
+    $subtask = Subtask::findOrFail($id);
+    $subtask->delete();
+    return response()->json(['message' => 'تم حذف التاسك الفرعي بنجاح']);
+}
+
+
+
 }

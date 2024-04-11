@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TablesController;
 use App\Http\Controllers\ProjectController;
@@ -59,3 +60,19 @@ Route::patch('/schedule/{schedule}/update-type', [TablesController::class, 'upda
 
 
 Route::post('/subtasks', [SubtaskController::class, 'store'])->name('subtasks.store');
+
+
+
+// إظهار التاسكات الفرعية
+Route::get('/subtasks/{taskId}', [SubtaskController::class, 'show'])->name('subtasks.show');
+
+// حذف التاسك الفرعي
+Route::delete('/subtasks/{id}', [SubtaskController::class, 'destroy'])->name('subtasks.destroy');
+
+// تحديث حالة التاسك الفرعي
+Route::patch('/subtasks/{id}', [SubtaskController::class, 'update'])->name('subtasks.update');
+
+
+
+Route::get('/administration/public/files/{scheduleId}', [FileController::class, 'index'])->name('files.index');
+Route::post('/administration/public/files', [FileController::class, 'store'])->name('files.store');
