@@ -65,7 +65,7 @@
                                 <option value="done" @if($item->status == 'done') selected @endif>Done</option>
                             </select>
                         </td>
-                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-id="{{ $item->id }}">Subtasks</button></td>
+                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}">Subtasks</button></td>
 
                         <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
                         <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
@@ -117,7 +117,7 @@
                                     <option value="done" @if($item_schedule->status == 'done') selected @endif>Done</option>
                                 </select>
                             </td>
-                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-id="{{ $item->id }}">Subtasks</button></td>
+                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}">Subtasks</button></td>
 
                             <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal">Files</button></td>
                             <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
@@ -233,12 +233,16 @@
 
                     </div>
                     <!-- Text field for adding new subtask -->
-                    <div class="mt-3">
-                        <label for="newSubtaskInput">Add New Subtask</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="newSubtaskInput" onKeyPress="if(event.keyCode==13){addNewSubtask();}">
-                        </div>
-                    </div>
+                   <div class="mt-3">
+        <label for="newSubtaskInput">إضافة مهمة فرعية جديدة</label>
+        <div class="input-group">
+            <input type="text" class="form-control" id="newSubtaskInput" onKeyPress="if(event.keyCode==13){addNewSubtask();}">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="addNewSubtask()">إضافة</button>
+            </div>
+        </div>
+    </div>
+
                     <div class="mt-3">
                         <div class="progress-container">
                             <div class="progress-bar" style="width: 0%;">0%</div>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TablesController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SubtaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,3 +55,7 @@ Route::patch('/schedule/{schedule}', [TablesController::class, 'update']);
 // Route::patch('/schedule/{schedule}', 'ScheduleController@update')->name('schedule.update');
 // Route::delete('/tables/{table}', 'TableController@destroy')->name('tables.destroy');
 Route::patch('/schedule/{schedule}/update-type', [TablesController::class, 'updateType'])->name('schedule.update-type');
+
+
+
+Route::post('/subtasks', [SubtaskController::class, 'store'])->name('subtasks.store');

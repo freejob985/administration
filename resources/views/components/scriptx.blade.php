@@ -72,25 +72,43 @@
         });
 
         // إضافة مهمة فرعية جديدة
-        function addNewSubtask() {
-            var newSubtaskText = $('#newSubtaskInput').val().trim();
-            if (newSubtaskText !== '') {
+function addNewSubtask() {
+    var newSubtaskText = $('#newSubtaskInput').val().trim();
+    if (newSubtaskText !== '') {
+        var scheduleId = $('#subtasksModal').data('schedule-id');
+
+        $.ajax({
+            url: '{{ route("subtasks.store") }}',
+            type: 'POST',
+            data: {
+                name: newSubtaskText,
+                     condition: 0, // تحويل القيمة إلى 0 بدلاً من false
+
+                task_id: scheduleId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
                 var newSubtaskHtml = `
-<div class="card draggable">
-    <div class="card-body d-flex align-items-center justify-content-between">
-        <div class="form-check d-flex align-items-center">
-            <input type="checkbox" id="subtaskCheckbox-${$('.card').length + 1}" class="form-check-input mr-3" style="transform: scale(1.5);">
-            <label for="subtaskCheckbox-${$('.card').length + 1}" class="form-check-label mb-0" style="font-size: 1.2em;">${newSubtaskText}</label>
-        </div>
-        <i class="fas fa-trash delete-icon"></i>
-    </div>
-</div>
-`;
-                $('#sortable-list').append(newSubtaskHtml);
+                    <div class="card draggable">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" id="subtaskCheckbox-${response.id}" class="form-check-input mr-3" style="transform: scale(1.5);">
+                                <label for="subtaskCheckbox-${response.id}" class="form-check-label mb-0" style="font-size: 1.2em;">${response.name}</label>
+                            </div>
+                            <i class="fas fa-trash delete-icon"></i>
+                        </div>
+                    </div>
+                `;
+                $('.subtasks').append(newSubtaskHtml);
                 $('#newSubtaskInput').val('');
                 updateProgressBar();
+            },
+            error: function(xhr, status, error) {
+                console.error('خطأ في إضافة المهمة الفرعية:', error);
             }
-        }
+        });
+    }
+}
 
 
         // تحديث شريط التقدم عند إكمال المهمة الفرعية
@@ -380,6 +398,17 @@
             animation: 150, // مدة الرسم البياني للحركة بالمللي ثانية
             ghostClass: 'sortable-ghost', // تحديد الفئة للعنصر المؤقت أثناء السحب
         });
+
+
+
+
+$('#subtasksModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);
+    var scheduleId = button.data('schedule-id');
+    $(this).data('schedule-id', scheduleId);
+});
+
+
 
     </script>
 

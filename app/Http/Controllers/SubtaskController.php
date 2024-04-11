@@ -26,18 +26,20 @@ class SubtaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-  public function store(Request $request)
-  {
-  $validatedData = $request->validate([
-  'name' => 'required|string',
-  'condition' => 'required|boolean',
-  'task_id' => 'required|exists:schedule,id',
-  ]);
+public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string',
+        'condition' => 'required|boolean', // الحقل من نوع boolean
+        'task_id' => 'required|exists:schedule,id',
+    ]);
 
-  $subtask = Subtask::create($validatedData);
+    $validatedData['condition'] = (int) $validatedData['condition']; // تحويل القيمة إلى integer
 
-  return response()->json($subtask, 201);
-  }
+    $subtask = Subtask::create($validatedData);
+
+    return response()->json($subtask, 201);
+}
 
     /**
      * Display the specified resource.
