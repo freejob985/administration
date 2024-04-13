@@ -43,15 +43,41 @@ class TablesController extends Controller
         return response()->json(['message' => 'Table deleted successfully']);
     }
 
-public function update(Request $request, Schedule $schedule)
+public function update(Request $request)
 {
-$schedule->update([
-'priority' => $request->input('priority'),
-'status' => $request->input('status'),
-]);
+    // التحقق من وجود scheduleId في الطلب
+    if ($request->has('scheduleId')) {
+        // العثور على الجدول بالرقم المحدد
+        $schedule = Schedule::find($request->input('scheduleId'));
 
-return response()->json($schedule);
+        // التحقق من وجود الجدول
+        if ($schedule) {
+            // التحقق مما إذا كانت هناك قيمة لأولوية في الطلب وتحديثها
+            if ($request->has('priority')) {
+                $schedule->priority = $request->input('priority');
+            }
+
+            // التحقق مما إذا كانت هناك قيمة لحالة في الطلب وتحديثها
+            if ($request->has('status')) {
+                $schedule->status = $request->input('status');
+            }
+
+            // حفظ التغييرات
+            $schedule->save();
+
+            // إرجاع الجدول المحدث كـ JSON
+            return response()->json($schedule);
+        } else {
+            // إذا لم يتم العثور على الجدول المطلوب
+            return response()->json(['message' => 'Schedule not found'], 404);
+        }
+    } else {
+        // إذا لم يتم إرسال معرف الجدول (scheduleId)
+        return response()->json(['message' => 'Schedule ID is required'], 400);
+    }
 }
+
+
 
    public function updateType(Request $request, Schedule $schedule)
    {

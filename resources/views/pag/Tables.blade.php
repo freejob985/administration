@@ -59,11 +59,14 @@
 
 
                         <td>
-                            <select class="form-control status-select" data-id="{{ $item->id }}">
-                                <option value="todo" @if($item->status == 'todo') selected @endif>Todo</option>
-                                <option value="in-progress" @if($item->status == 'in-progress') selected @endif>In Progress</option>
-                                <option value="done" @if($item->status == 'done') selected @endif>Done</option>
-                            </select>
+<select class="form-control status-select" data-id="{{ $item->id }}">
+    <option value="todo" @if($item->status == 'todo') selected @endif>Todo</option>
+    <option value="in-progress" @if($item->status == 'in-progress') selected @endif>In Progress</option>
+    <option value="done" @if($item->status == 'done') selected @endif>Done</option>
+    <option value="error" @if($item->status == 'error') selected @endif>Error</option>
+    <option value="study" @if($item->status == 'study') selected @endif>Study</option>
+    <option value="research" @if($item->status == 'research') selected @endif>Research</option>
+</select>
                         </td>
                         <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}">Subtasks</button></td>
 
@@ -111,11 +114,14 @@
                                 </div>
                             </td>
                             <td>
-                                <select class="form-control status-select" data-id="{{ $item->id }}">
-                                    <option value="todo" @if($item_schedule->status == 'todo') selected @endif>Todo</option>
-                                    <option value="in-progress" @if($item_schedule->status == 'in-progress') selected @endif>In Progress</option>
-                                    <option value="done" @if($item_schedule->status == 'done') selected @endif>Done</option>
-                                </select>
+                              <select class="form-control status-select" data-id="{{ $item_schedule->id }}">
+    <option value="todo" @if($item_schedule->status == 'todo') selected @endif>Todo</option>
+    <option value="in-progress" @if($item_schedule->status == 'in-progress') selected @endif>In Progress</option>
+    <option value="done" @if($item_schedule->status == 'done') selected @endif>Done</option>
+    <option value="error" @if($item_schedule->status == 'error') selected @endif>Error</option>
+    <option value="study" @if($item_schedule->status == 'study') selected @endif>Study</option>
+    <option value="research" @if($item_schedule->status == 'research') selected @endif>Research</option>
+</select>
                             </td>
                             <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}">Subtasks</button></td>
 
