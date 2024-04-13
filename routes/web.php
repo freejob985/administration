@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TablesController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SubtaskController;
+use App\Http\Controllers\CommentsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -76,3 +77,14 @@ Route::patch('/subtasks/{id}', [SubtaskController::class, 'update'])->name('subt
 
 Route::get('/administration/public/files/{scheduleId}', [FileController::class, 'index'])->name('files.index');
 Route::post('/administration/public/files', [FileController::class, 'store'])->name('files.store');
+
+
+
+
+// Fetch the main task
+// Route::get('/schedule/{scheduleId}', [ScheduleController::class, 'show'])->name('schedule.show');
+
+// Comments-related routes
+Route::get('/schedule/{scheduleId}/comments', [CommentsController::class, 'index'])->name('comments.index');
+Route::post('/schedule/{scheduleId}/comments', [CommentsController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{id}', [CommentsController::class, 'destroy'])->name('comments.destroy');

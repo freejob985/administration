@@ -1,40 +1,78 @@
-<div id="subtasksModal" class="modal fade left" tabindex="-1" role="dialog" aria-labelledby="subtasksModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: blue; color: white;">
-                <h5 class="modal-title" id="subtasksModalLabel">Subtasks</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="subtasks-container">
-                <div class="subtasks">
-                    <div class="subtask-item draggable">
-                        <div class="form-check d-flex align-items-center">
-                            <input type="checkbox" id="subtaskCheckbox1" class="form-check-input mr-3"
-                                style="transform: scale(1.5);">
-                            <label for="subtaskCheckbox1" class="form-check-label mb-0"
-                                style="font-size: 1.2em;">Subtask 1 description</label>
+// 在 document ready 或 window load 事件中执行
+$(document).ready(function() {
+    // 在打开评论模态框时加载评论
+    $('#commentsModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var scheduleId = button.data('schedule-id');
+
+        // 加载评论
+        loadComments(scheduleId);
+    });
+
+    // 添加新评论
+    $('#addCommentButton').click(function() {
+        var commentText = $('#commentTextarea').val();
+        var scheduleId = $('#commentsModal').data('schedule-id');
+
+        // 保存新评论
+        saveComment(scheduleId, commentText);
+    });
+});
+
+function loadComments(scheduleId) {
+    $.ajax({
+        url: '/schedule/' + scheduleId + '/comments',
+        type: 'GET',
+        success: function(data) {
+            // 清空现有评论
+            $('.comments-list').empty();
+
+            // 渲染评论
+            data.forEach(function(comment) {
+                var commentHtml = `
+                    <div class="mb-3 comment-card">
+                        <div class="d-flex justify-content-between">
+                            <h6>${comment.user.name}</h6>
                         </div>
+                        <p style="white-space: pre-line;">${comment.content}</p>
                     </div>
-                    <!-- Add more subtask items here -->
-                </div>
-                <!-- Text field for adding new subtask -->
-                <div class="mt-3">
-                    <label for="newSubtaskInput">Add New Subtask</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="newSubtaskInput"
-                            onKeyPress="if(event.keyCode==13){addNewSubtask();}">
+                `;
+                $('.comments-list').append(commentHtml);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+function saveComment(scheduleId, commentText) {
+    $.ajax({
+        url: '/schedule/' + scheduleId + '/comments',
+        type: 'POST',
+        data: {
+            content: commentText
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data) {
+            // 清空评论文本框
+            $('#commentTextarea').val('');
+
+            // 添加新评论到列表
+            var newComment = `
+                <div class="mb-3 comment-card">
+                    <div class="d-flex justify-content-between">
+                        <h6>${data.user.name}</h6>
                     </div>
+                    <p style="white-space: pre-line;">${data.content}</p>
                 </div>
-                <!-- Progress bar -->
-                <div class="mt-3">
-                    <div class="progress-container">
-                        <div class="progress-bar" style="width: 0%;">0%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            `;
+            $('.comments-list').append(newComment);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}

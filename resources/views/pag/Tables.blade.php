@@ -68,7 +68,7 @@
                         <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}">Subtasks</button></td>
 
                         <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item->id }}" >Files</button></td>
-                        <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
+                        <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal" data-schedule-id="{{ $item->id }}">Comments</button></td>
                     </tr>
                     @endforeach
 
@@ -120,7 +120,7 @@
                             <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}">Subtasks</button></td>
 
                             <td><button class="btn btn-secondary btn-sm filesModal" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item_schedule->id }}">Files</button></td>
-                            <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button></td>
+                            <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal"  data-schedule-id="{{ $item_schedule->id }}">Comments</button></td>
                         </tr>
                         @endforeach
                         @else
@@ -263,34 +263,33 @@
     </div>
 
     <!-- Comments Modal -->
-    <div class="modal fade left" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #00c851; color: rgb(255, 255, 255);">
-                    <h5 class="modal-title" id="commentsModalLabel">Comments</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+<div class="modal fade left" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00c851; color: rgb(255, 255, 255);">
+                <h5 class="modal-title" id="commentsModalLabel">Comments</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="comments-list">
+                    <!-- Comments will be loaded here -->
                 </div>
-                <div class="modal-body">
-                    <!-- Comments content goes here -->
-                    <div class="mb-3 comment-card">
-                        <div class="d-flex justify-content-between">
-                            <h6>User 1</h6>
-                            <button class="btn btn-danger btn-sm delete-comment"><i class="fas fa-trash"></i></button>
-                        </div>
-                        <p style="white-space: pre-line;">Comment text goes here...</p>
-                    </div>
-                    <!-- Comment input field -->
-                    <div class="form-group">
-                        <label for="commentTextarea">Add Comment</label>
-                        <textarea class="form-control" id="commentTextarea"></textarea>
-                        <button class="btn btn-primary" id="addCommentButton">Add Comment</button>
-                    </div>
+                <div class="form-group">
+                    <label for="commentTextarea">Add Comment</label>
+                    <textarea class="form-control" id="commentTextarea"></textarea>
+<input type="hidden" name="schedule_id" id="schedule_id">
+                    <button class="btn btn-primary" id="addCommentButton">Add Comment</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
     <x-jsx />
 
 </body>
