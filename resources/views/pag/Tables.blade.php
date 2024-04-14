@@ -68,10 +68,10 @@
     <option value="research" @if($item->status == 'research') selected @endif>Research</option>
 </select>
                         </td>
-                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}">Subtasks</button></td>
+                        <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item->id }}" data-name="{{ $item->name }}">Subtasks</button></td>
 
-                        <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item->id }}" >Files</button></td>
-                        <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal" data-schedule-id="{{ $item->id }}">Comments</button></td>
+                        <td><button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item->id }}"  data-name="{{ $item->name }}">Files</button></td>
+                        <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal" data-schedule-id="{{ $item->id }}" data-name="{{ $item->name }}">Comments</button></td>
                     </tr>
                     @endforeach
 
@@ -123,10 +123,10 @@
     <option value="research" @if($item_schedule->status == 'research') selected @endif>Research</option>
 </select>
                             </td>
-                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}">Subtasks</button></td>
+                            <td><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#subtasksModal" data-schedule-id="{{ $item_schedule->id }}" data-name="{{ $item_schedule->name }}" >Subtasks</button></td>
 
-                            <td><button class="btn btn-secondary btn-sm filesModal" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item_schedule->id }}">Files</button></td>
-                            <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal"  data-schedule-id="{{ $item_schedule->id }}">Comments</button></td>
+                            <td><button class="btn btn-secondary btn-sm filesModal" data-toggle="modal" data-target="#filesModal"  data-schedule-id="{{ $item_schedule->id }}" data-name="{{ $item_schedule->name }}">Files</button></td>
+                            <td><button class="btn btn-success btn-sm" data-toggle="modal" data-target="#commentsModal"  data-schedule-id="{{ $item_schedule->id }}" data-name="{{ $item_schedule->name }}">Comments</button></td>
                         </tr>
                         @endforeach
                         @else
@@ -189,7 +189,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="sortable-list">
+                <div class="modal-body">
                     <!-- Subtasks content goes here -->
                     {{-- <div class="card draggable">
                         <div class="card-body d-flex align-items-center justify-content-between">
@@ -211,7 +211,7 @@
                     </div> --}}
                     <!-- Add your other subtasks here -->
 
-                    <div class="subtasks">
+                    <div class="subtasks"  id="sortable-list">
 
                     </div>
                     <!-- Text field for adding new subtask -->
@@ -219,7 +219,7 @@
         <label for="newSubtaskInput">إضافة مهمة فرعية جديدة</label>
         <div class="input-group">
             <input type="text" class="form-control" id="newSubtaskInput" onKeyPress="if(event.keyCode==13){addNewSubtask();}">
-            <div class="input-group-append">
+            <div class="input-group-append" style="display: none">
                 <button class="btn btn-primary" onclick="addNewSubtask()">إضافة</button>
             </div>
         </div>
@@ -260,8 +260,8 @@
                     </div>
 
                     <div class="mt-3">
-                        <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-pdf"></i> Download PDF</a>
-                        <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-word"></i> Download Word</a>
+                        {{-- <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-pdf"></i> Download PDF</a>
+                        <a href="#" class="btn btn-primary" style="background: #9551b7 !important;"><i class="fas fa-file-word"></i> Download Word</a> --}}
                     </div>
                 </div>
             </div>
@@ -269,9 +269,11 @@
     </div>
 
     <!-- Comments Modal -->
-<div class="modal fade left" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
-        <div class="modal-content">
+<div class="modal fade left" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="commentsModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document" >
+        <div class="modal-content" style="
+    width: 1606px;
+">
             <div class="modal-header" style="background-color: #00c851; color: rgb(255, 255, 255);">
                 <h5 class="modal-title" id="commentsModalLabel">Comments</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -283,10 +285,13 @@
                     <!-- Comments will be loaded here -->
                 </div>
                 <div class="form-group">
-                    <label for="commentTextarea">Add Comment</label>
+                    {{-- <label for="commentTextarea">Add Comment</label> --}}
                     <textarea class="form-control" id="commentTextarea"></textarea>
 <input type="hidden" name="schedule_id" id="schedule_id">
-                    <button class="btn btn-primary" id="addCommentButton">Add Comment</button>
+                    <button class="btn btn-primary" id="addCommentButton" style="
+    width: 100%;
+    background: #00c851 !important;
+"> اضافة تعليق </button>
                 </div>
             </div>
         </div>

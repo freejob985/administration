@@ -72,7 +72,7 @@
             }],
             template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
             template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-            height: 600,
+            height: 350,
             image_caption: true,
             quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
             noneditable_noneditable_class: 'mceNonEditable',
@@ -80,7 +80,7 @@
             contextmenu: 'link image imagetools table configurepermanentpen',
             skin: 'oxide',
             content_css: 'default',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:25px }',
             font_formats: 'Arial=arial,helvetica,sans-serif;Courier New=courier new,courier,monospace;AkrutiKndPadmini=Akpdmi-n',
             setup: (editor) => {
                 editor.on('init', () => {
@@ -147,7 +147,7 @@
                         response.forEach(function(file) {
                             var fileHtml = `
                             <div class="mb-3">
-                                <a href="{{ asset('storage/files/') }}/${file.filename}" class="btn btn-primary" target="_blank">
+                                <a href="{{ asset('storage/files/') }}/${file.filename}" class="btn btn-primary" target="_blank" style="background: #9551b7 !important;"  download>
                                     <i class="fas fa-file"></i> ${file.filename}
                                 </a>
                             </div>
@@ -264,60 +264,7 @@
         }
 
         // إضافة تعليق جديد
-        $('#addCommentButton').click(function() {
-            var commentText = tinyMCE.get('commentTextarea').getContent().trim();
-            if (commentText !== '') {
-                //=======================
 
-                var scheduleIdValue = document.getElementById("schedule_id").value;
-                var commentText = tinyMCE.get('commentTextarea').getContent().trim();
-                // var scheduleId = $('#commentsModal').data('schedule-id');
-
-                $.ajax({
-                    url: '/administration/public/schedule/' + scheduleIdValue + '/comments',
-                    type: 'POST',
-                    data: {
-                        content: commentText,
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        // Clear the comment textarea
-                        $('#commentTextarea').val('');
-
-                        // Add the new comment to the list
-                        var newComment = `
-                <div class="mb-3 comment-card">
-                    <div class="d-flex justify-content-between">
-                        <h6>ADMIN</h6>
-                        <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${data.id}"><i class="fas fa-trash"></i></button>
-                    </div>
-                    <p style="white-space: pre-line;">${data.content}</p>
-                </div>
-            `;
-                        $('.comments-list').append(newComment);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-
-                //======================
-
-                // var newCommentHtml = `
-            //     <div class="mb-3 comment-card">
-            //         <div class="d-flex justify-content-between">
-            //             <h6>المستخدم</h6>
-            //             <button class="btn btn-danger btn-sm delete-comment"><i class="fas fa-trash"></i></button>
-            //         </div>
-            //         <p style="white-space: pre-line;">${commentText}</p>
-            //     </div>
-            // `;
-                // $('#commentsModal .modal-body').append(newCommentHtml);
-                tinyMCE.get('commentTextarea').setContent('');
-            }
-        });
 
         // حذف تعليق
         $('#commentsModal .modal-body').on('click', '.delete-comment', function() {
@@ -626,33 +573,7 @@
             fetchComments(scheduleId);
         });
 
-        function fetchComments(scheduleId) {
-            $.ajax({
-                url: '/administration/public/schedule/' + scheduleId + '/comments',
-                type: 'GET',
-                success: function(data) {
-                    // Clear the existing comments
-                    $('.comments-list').empty();
 
-                    // Render the comments
-                    data.forEach(function(comment) {
-                        var commentHtml = `
-                    <div class="mb-3 comment-card">
-                        <div class="d-flex justify-content-between">
-                            <h6>ADMIN</h6>
-                            <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${comment.id}"><i class="fas fa-trash"></i></button>
-                        </div>
-                        <p style="white-space: pre-line;">${comment.content}</p>
-                    </div>
-                `;
-                        $('.comments-list').append(commentHtml);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
         $('.comments-list').on('click', '.delete-comment', function() {
             var commentId = $(this).data('comment-id');
 
@@ -898,9 +819,83 @@ $('.table-container').on('change', '.priority-select, .status-select', function(
                 }
             });
         });
+//========================================
 
+$('#addCommentButton').click(function() {
+  var commentText = tinyMCE.get('commentTextarea').getContent().trim();
+  if (commentText !== '') {
+    var scheduleIdValue = document.getElementById("schedule_id").value;
+    $.ajax({
+      url: '/administration/public/schedule/' + scheduleIdValue + '/comments',
+      type: 'POST',
+      data: {
+        content: commentText,
+      },
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(data) {
+        $('#commentTextarea').val('');
+        var newComment = `
+        <div class="mb-3 comment-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <img src="https://scontent.fcai20-3.fna.fbcdn.net/v/t39.30808-6/329724069_541779894594590_1088093019109401317_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwePqO3RZ-2BIedt5bh-9_zh6QYDZ-VwnOHpBgNn5XCUdoPDripKgugv6nt-Z_mh_MRYaBSBToG2AalHAfwMYK&_nc_ohc=DJdoJU45ks4Ab7fpMYj&_nc_ht=scontent.fcai20-3.fna&oh=00_AfCGvx_06qxR-goPwBwvnacymRWxZqbVzrfIyfiVbn61UQ&oe=662049C0" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
+              <div class="comment-author ml-2">Newt Scamander</div>
+            </div>
+            <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${data.id}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <p style="white-space: pre-line;">${data.content}</p>
+        </div>
+      `;
+      $('.comments-list').append(newComment);
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+      }
+    });
+  }
+});
 
+function fetchComments(scheduleId) {
+  $.ajax({
+    url: '/administration/public/schedule/' + scheduleId + '/comments',
+    type: 'GET',
+    success: function(data) {
+      $('.comments-list').empty();
+      data.forEach(function(comment) {
+        var commentHtml = `
+        <div class="mb-3 comment-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <img src="https://scontent.fcai20-3.fna.fbcdn.net/v/t39.30808-6/329724069_541779894594590_1088093019109401317_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwePqO3RZ-2BIedt5bh-9_zh6QYDZ-VwnOHpBgNn5XCUdoPDripKgugv6nt-Z_mh_MRYaBSBToG2AalHAfwMYK&_nc_ohc=DJdoJU45ks4Ab7fpMYj&_nc_ht=scontent.fcai20-3.fna&oh=00_AfCGvx_06qxR-goPwBwvnacymRWxZqbVzrfIyfiVbn61UQ&oe=662049C0" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
+              <div class="comment-author ml-2">Newt Scamander</div>
+            </div>
+            <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${comment.id}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <p style="white-space: pre-line;">${comment.content}</p>
+        </div>
+      `;
+      $('.comments-list').append(commentHtml);
+      });
+    },
+    error: function(xhr, status, error) {
+      console.error(error);
+    }
+  });
+}
 
+$('.btn[data-toggle="modal"]').click(function() {
+    var scheduleId = $(this).data('schedule-id');
+    var modalId = $(this).data('target');
+    var taskName = $(this).data('name');
+
+    $(modalId + ' .modal-title').text(taskName);
+});
     </script>
 
 </div>

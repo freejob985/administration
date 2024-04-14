@@ -82,7 +82,7 @@ public function update(Request $request)
    public function updateType(Request $request, Schedule $schedule)
    {
    $schedule->update([
-   'type' => $request->input('type'),
+   'type' => $request->input('type') ?? "Basic",
    ]);
 
    return response()->json($schedule);

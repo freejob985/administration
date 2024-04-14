@@ -172,6 +172,23 @@
             /* Push the icon to the right */
         }
 
+
+comment-author.ml-2 {
+    font-size: 17px;
+    color: #045c28;
+    font-weight: 700;
+}
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-size: 31px;
+    font-weight: 500;
+}
+td {
+    font-size: 20px !important;
+    font-weight: bolder !important;
+}
+
     </style>
 
 
