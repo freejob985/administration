@@ -14,11 +14,13 @@
         <br>
         <div class="row" style="margin-bottom: 9px;">
             <button class="btn create-icon"><i class="material-icons">add</i></button>
-            <button class="btn btn-primary">Primary Button</button>
-            <button class="btn btn-secondary">Secondary Button</button>
-            <button class="btn btn-success">Success Button</button>
-            <button class="btn btn-danger">Danger Button</button>
-            <button class="btn btn-warning">Warning Button</button>
+            <a class="btn btn-primary" href="http://localhost/administration/public/task" >رجوع الي المشاريع</a>
+            <a class="btn btn-secondary"  href="http://localhost/administration/public/Lansori" target="_blank">لانسوري </a>
+            <a class="btn btn-success"  href="http://localhost/administration/public/Artificial" target="_blank">تكوين سؤال </a>
+            <a class="btn btn-danger"  href="http://localhost/wordpress.php" target="_blank">اضافة مشروع برمجي  </a>
+            <a class="btn btn-warning"  href="">المدونة </a>
+            <a class="btn btn-primary"  href="{{ route('mental.index', [$id]) }}"> مساحة العمل  </a>
+
         </div>
     </div>
     <!-- Table Container -->

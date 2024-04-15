@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TablesController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SubtaskController;
+use App\Http\Controllers\YouTubeController;
 use App\Http\Controllers\CommentsController;
 
 Route::get('/', function () {
@@ -88,3 +89,12 @@ Route::post('/administration/public/files', [FileController::class, 'store'])->n
 Route::get('/schedule/{scheduleId}/comments', [CommentsController::class, 'index'])->name('comments.index');
 Route::post('/schedule/{scheduleId}/comments', [CommentsController::class, 'store'])->name('comments.store');
 Route::delete('/comments/{id}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+
+
+
+
+Route::get('/youtube/playlists', [YouTubeController::class, 'getPlaylists']);
+Route::get('/youtube/videos/{playlistId}', [YouTubeController::class, 'getVideos']);
+
+
+

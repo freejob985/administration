@@ -37,7 +37,7 @@
             </div>
 
             @endforeach
-<a class="btn btn-primary" href="{{ route('Tables.index', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;">Secondary Button</a>
+<a class="btn btn-primary" href="{{ route('Tables.index', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;">جدولة المهام</a>
 
         </div>
     </div>

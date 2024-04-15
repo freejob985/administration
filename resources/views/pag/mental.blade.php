@@ -163,14 +163,37 @@
             font-weight: 600;
             word-spacing: 7px;
         }
+button {
+    font-family: 'Cairo', sans-serif !important;
+font-size: 25px !important;
+}
+a.btn.material-icons.home {
+    font-family: 'Cairo', sans-serif !important;
+}
+button.btn.material-icons.favorite.requirements {
+    color: black;
+}
+a.btn.material-icons.favorite {
+    color: black;
+}
+
+a.btn.material-icons.favorite {
+    font-family: 'Cairo', sans-serif !important;
+}
+
+
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <button class="btn material-icons home idea">idea</button>
-        <button class="btn material-icons favorite requirements">requirements</button>
-        <button class="btn material-icons shopping_cart mistakes">mistakes</button>
-        <button class="btn material-icons settings number">number</button>
+        <button class="btn material-icons home idea">الأفكار</button>
+        <button class="btn material-icons favorite requirements">المتطلبات</button>
+        <button class="btn material-icons shopping_cart mistakes">الاخطاء</button>
+        <button class="btn material-icons settings number">العناوين</button>
+        <a class="btn material-icons home " href="http://localhost/administration/public/task">الرئسية</a>
+        <a class="btn material-icons favorite " href="{{ route('Tables.index', [$id]) }}">الجداول</a>
+
+
     </div>
 
     <!-- تضمين ملفات JavaScript الضرورية -->

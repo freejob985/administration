@@ -189,6 +189,26 @@ td {
     font-weight: bolder !important;
 }
 
+
+progress-container {
+    width: 100%;
+    height: 20px;
+    background-color: #65e081;
+    border-radius: 1px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    background-color: #65e081;
+    width: 0%;
+    text-align: right;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+    padding-right: 5px;
+    border-radius: 40px !important;
+}
+
     </style>
 
 

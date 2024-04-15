@@ -209,7 +209,7 @@ function deleteProject(button) {
             projectContainer.remove();
         },
         error: function() {
-            alert('Error deleting project');
+      //      alert('Error deleting project');
         }
     });
 }

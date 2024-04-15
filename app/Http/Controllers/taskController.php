@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\schedule;
 use Illuminate\Http\Request;
 
+
 class TaskController extends Controller
 {
 
@@ -46,7 +47,7 @@ class TaskController extends Controller
         $mistakesLabels = Label::where('type', 'mistakes')->where('projects',$id)->get();
         $numberLabels = Label::where('type', 'number')->where('projects',$id)->get();
         $requirementsLabels = Label::where('type', 'requirements')->where('projects',$id)->get();
-        return view('pag.mental', compact('tasks','ideaLabels','mistakesLabels','numberLabels','requirementsLabels'));
+        return view('pag.mental', compact('tasks','ideaLabels','mistakesLabels','numberLabels','requirementsLabels','id'));
     }
 
     public function storeTask(Request $request, Project $project)
@@ -55,21 +56,18 @@ class TaskController extends Controller
         $task->name = $request->input('name');
         $task->project_id = $project->id;
         $task->save();
-
+$latestTaskId = Task::max('id');
 
 
 
         $task = new schedule();
         $task->name = $request->input('name');
         $task->project_id = $project->id;
+        $task->task_id = $latestTaskId;
         $task->save();
 
 
 
-// DB::table('schedule')->insert([
-//     'name' => $request->input('name'), // قيمة مطلوبة: استبدلها بالقيمة التي تريدها
-//     'project_id ' => $project->id, // قيمة مطلوبة: استبدلها بالقيمة التي تريدها
-// ]);
 
 
 
@@ -86,12 +84,18 @@ class TaskController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function destroyTask(Task $task)
-    {
-        $task->delete();
+public function destroyTask(Task $task)
+{
+    // حذف المهمة من الجدول "Task"
+    $task->delete();
 
-        return response()->json(['success' => true]);
-    }
+    // حذف السجلات من الجدول "schedule" حيث "task_id" يساوي "id" المحذوف من الجدول "Task"
+    Schedule::where('task_id', $task->id)->delete();
+    DB::table('subtasks')->where('task_id', $id)->delete();
+
+    return response()->json(['success' => true]);
+}
+
 
     public function storeLabel(Request $request)
     {
@@ -116,7 +120,6 @@ public function updateLabelPosition(Request $request, Label $label)
     $label->data_x = $request->input('data_x');
     $label->data_y = $request->input('data_y');
     $label->save();
-
     return response()->json(['success' => true]);
 }
 
