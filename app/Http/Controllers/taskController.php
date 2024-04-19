@@ -91,7 +91,7 @@ public function destroyTask(Task $task)
 
     // حذف السجلات من الجدول "schedule" حيث "task_id" يساوي "id" المحذوف من الجدول "Task"
     Schedule::where('task_id', $task->id)->delete();
-    DB::table('subtasks')->where('task_id', $id)->delete();
+    DB::table('subtasks')->where('task_id', $task->id)->delete();
 
     return response()->json(['success' => true]);
 }

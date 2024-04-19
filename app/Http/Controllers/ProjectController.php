@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Task;
 use App\Models\Project;
+use App\Models\Subtask;
 use Illuminate\Http\Request;
 use Illuminate\Console\Scheduling\Schedule;
-use DB;
+
 class ProjectController extends Controller
 {
     public function index()
@@ -38,13 +40,15 @@ public function destroy($id)
     $project->delete();
 
     // حذف السجلات من جدول "tasks" حيث "project_id" يساوي "id" المشروع المحذوف من الجدول "Project"
+    $tasks = Task::where('project_id', $id)->get();
+    foreach ($tasks as $task) {
+        Subtask::where('task_id', $task->id)->delete();
+    }
     Task::where('project_id', $id)->delete();
 
     // حذف السجلات من جدول "schedule" حيث "project_id" يساوي "id" المشروع المحذوف من الجدول "Project"
     DB::table('schedule')->where('project_id', $id)->delete();
     DB::table('labels')->where('projects', $id)->delete();
-
-
 
     return response()->json(['success' => true]);
 }

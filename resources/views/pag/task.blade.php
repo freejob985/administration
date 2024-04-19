@@ -152,6 +152,8 @@ a#linke-titel {
     color: black !important;
     text-decoration: auto!important;
 }
+
+
     </style>
 </head>
 <body>
@@ -164,7 +166,7 @@ a#linke-titel {
         </div>
     </div>
 
-    <div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1;">
+    {{-- <div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1; display: none !important">
         <div class="d-flex justify-content-center">
             <button class="btn btn-primary btn-lg me-3">زر 1</button>
             <button class="btn btn-secondary btn-lg me-3">زر 2</button>
@@ -174,7 +176,7 @@ a#linke-titel {
         <div class="d-flex justify-content-center mt-3">
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addProjectModal" onclick="showAddProjectModal()">إضافة مشروع جديد</button>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Modal for Adding Project -->
     <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModalLabel" aria-hidden="true">
@@ -206,5 +208,13 @@ a#linke-titel {
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+<script>
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Insert') {
+        // فتح النافذة المنبثقة لإضافة مشروع جديد
+        $('#addProjectModal').modal('show');
+    }
+});
+</script>
 </body>
 </html>

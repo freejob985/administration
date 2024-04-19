@@ -206,7 +206,7 @@ progress-container {
     color: white;
     font-weight: bold;
     padding-right: 5px;
-    border-radius: 40px !important;
+    border-radius: 0px !important;
 }
 
     </style>
