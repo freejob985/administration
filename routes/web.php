@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\notepadcontroler;
 use App\Http\Controllers\TablesController;
+use App\Http\Controllers\NotepadController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\YouTubeController;
@@ -96,5 +98,24 @@ Route::delete('/comments/{id}', [CommentsController::class, 'destroy'])->name('c
 Route::get('/youtube/playlists', [YouTubeController::class, 'getPlaylists']);
 Route::get('/youtube/videos/{playlistId}', [YouTubeController::class, 'getVideos']);
 
+// ========================
+Route::get('/Notepad/{id}', [notepadcontroler::class, 'Notepad'])->name('Notepad');
 
 
+// Route::resource('notepads', NotepadController::class);
+
+// Route::get('/notepads', [NotepadController::class, 'index']);
+
+Route::get('/notepads/show', [NotepadController::class, 'index']);
+
+Route::DELETE('/notepads/destroy/{id}', [NotepadController::class, 'destroy']);
+
+Route::post('/notepads/Save', [NotepadController::class, 'store']);
+
+
+// routes/web.php
+Route::get('/notepads/file/{filename}', [NotepadController::class, 'showFile'])->name('notepads.file.show');
+
+// app/Http/Controllers/NotepadController.php
+
+Route::put('/notepads/update/{id}', [NotepadController::class, 'update']);

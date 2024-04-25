@@ -1,0 +1,13 @@
+.toString()The named parameter 'primary' isn't defined.
+Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'primary'.dartundefined_named_parameter
+
+حل هذه المشكلة في هذا الكود
+  return ElevatedButton.styleFrom(
+    primary: color,
+    minimumSize: Size.zero,
+    elevation: elevation,
+    padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.w),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(borderRadius)
+    )
+  );

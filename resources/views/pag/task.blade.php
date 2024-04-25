@@ -72,13 +72,10 @@
         body {
             position: relative; /* تحديد موضع العنصر الجسم */
             min-height: 100vh; /* تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
-            padding-bottom: 150px; /* إضافة هامش أسفل لعدم تغطية الفوتر */
+            padding-bottom: 150px; إضافة هامش أسفل لعدم تغطية الفوتر
         }
 
-        .project-row {
-            height: calc(100vh - 150px - 60px); /* تحديد الارتفاع بعد طرح ارتفاع الفوتر وبعض المساحة الإضافية */
-            overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
-        }
+
 
         .footer-container {
             height: 150px; /* تحديد ارتفاع الفوتر */
@@ -166,17 +163,6 @@ a#linke-titel {
         </div>
     </div>
 
-    {{-- <div class="footer-container fixed-bottom" style="background-color: #f0f0f0;padding: 15px;box-shadow: 0px -2px 5px #d5d1d1; display: none !important">
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-primary btn-lg me-3">زر 1</button>
-            <button class="btn btn-secondary btn-lg me-3">زر 2</button>
-            <button class="btn btn-success btn-lg me-3">زر 3</button>
-            <button class="btn btn-danger btn-lg me-3">زر 4</button>
-        </div>
-        <div class="d-flex justify-content-center mt-3">
-            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addProjectModal" onclick="showAddProjectModal()">إضافة مشروع جديد</button>
-        </div>
-    </div> --}}
 
     <!-- Modal for Adding Project -->
     <div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModalLabel" aria-hidden="true">

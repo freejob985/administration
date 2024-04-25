@@ -208,7 +208,18 @@ progress-container {
     padding-right: 5px;
     border-radius: 0px !important;
 }
+        .text-box-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
+        #newTaskInput {
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
     </style>
 
 

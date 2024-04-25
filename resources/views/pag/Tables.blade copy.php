@@ -1,78 +1,52 @@
-// 在 document ready 或 window load 事件中执行
-$(document).ready(function() {
-    // 在打开评论模态框时加载评论
-    $('#commentsModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var scheduleId = button.data('schedule-id');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Design</title>
+    <!-- CSS links and styles -->
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="card-container" id="newCardContainer">
+                <!-- Cards will be dynamically added here -->
+            </div>
+        </div>
+    </div>
 
-        // 加载评论
-        loadComments(scheduleId);
-    });
+    <!-- Modal for creating a new notepad -->
 
-    // 添加新评论
-    $('#addCommentButton').click(function() {
-        var commentText = $('#commentTextarea').val();
-        var scheduleId = $('#commentsModal').data('schedule-id');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script>
+        // JavaScript code
+        $(document).ready(function() {
+            fetchNotepads();
 
-        // 保存新评论
-        saveComment(scheduleId, commentText);
-    });
-});
+            // Other event handlers and AJAX requests
+        });
 
-function loadComments(scheduleId) {
-    $.ajax({
-        url: '/schedule/' + scheduleId + '/comments',
-        type: 'GET',
-        success: function(data) {
-            // 清空现有评论
-            $('.comments-list').empty();
 
-            // 渲染评论
-            data.forEach(function(comment) {
-                var commentHtml = `
-                    <div class="mb-3 comment-card">
-                        <div class="d-flex justify-content-between">
-                            <h6>${comment.user.name}</h6>
-                        </div>
-                        <p style="white-space: pre-line;">${comment.content}</p>
-                    </div>
-                `;
-                $('.comments-list').append(commentHtml);
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
 
-function saveComment(scheduleId, commentText) {
-    $.ajax({
-        url: '/schedule/' + scheduleId + '/comments',
-        type: 'POST',
-        data: {
-            content: commentText
-        },
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(data) {
-            // 清空评论文本框
-            $('#commentTextarea').val('');
+        $(document).on('click', '.copy-button', function() {
+            // Code to copy text to clipboard
+        });
 
-            // 添加新评论到列表
-            var newComment = `
-                <div class="mb-3 comment-card">
-                    <div class="d-flex justify-content-between">
-                        <h6>${data.user.name}</h6>
-                    </div>
-                    <p style="white-space: pre-line;">${data.content}</p>
-                </div>
-            `;
-            $('.comments-list').append(newComment);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
-}
+        $(document).on('click', '.open-button', function() {
+            var card = $(this).closest('.card');
+            var fileName = card.data('file-name');
+
+            if (fileName) {
+                var fileURL = '/administration/public/notepads/file/' + fileName;
+                window.open(fileURL, '_blank');
+            } else {
+                console.error('File name not found');
+            }
+        });
+
+        // Other JavaScript functions and event handlers
+    </script>
+</body>
+</html>

@@ -23,11 +23,17 @@
 
         </div>
     </div>
+
+
     <!-- Table Container -->
     <div class="table-container">
+
         <!-- Your beautiful table goes here -->
         <!-- Add buttons with plus icon -->
         <div>
+            <div class="text-box-container" data-id="{{ $id }}">
+                <input type="text" id="newTaskInput" class="form-control" placeholder="أدخل التاسك الجديد">
+            </div>
             <table class="table sortable">
                 <thead class="thead-dark">
                     <tr>
@@ -43,10 +49,15 @@
                 <tbody class="sortable">
                     <!-- Sample row, replace with your data using your backend -->
 
-
+@php
+$num =0
+@endphp
                     @foreach ($schedule as $item)
+                        @php
+                        $num ++;
+                        @endphp
                     <tr>
-                        <th scope="row">{{ $item->id }}</th>
+                        <th scope="row">{{ $num }}</th>
                         <td>{{ $item->name }}</td>
                         <td>
                             <div class="priority-container">
@@ -103,7 +114,7 @@
                         @if(DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->count() > 0)
                         @foreach (DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->orderBy('id','desc')->get() as $item_schedule)
                         <tr>
-                            <th scope="row">{{ $item_schedule->id }}</th>
+                            <th scope="row">{{ $num }}</th>
                             <td>{{ $item_schedule->name }}</td>
                             <td>
                                 <div class="priority-container">

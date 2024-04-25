@@ -37,7 +37,8 @@
             </div>
 
             @endforeach
-<a class="btn btn-primary" href="{{ route('Tables.index', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;">جدولة المهام</a>
+<a class="btn btn-primary" href="{{ route('Tables.index', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;">جدولة المهام</a>&nbsp;
+<a class="btn btn-primary" href="{{ route('Notepad', [$project->id]) }}" style="background: white;color: black;border: white;box-shadow: -3px 0px #544f4f;"> الملاحظات</a>
 
         </div>
     </div>

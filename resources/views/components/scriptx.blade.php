@@ -840,7 +840,7 @@ $('#addCommentButton').click(function() {
         <div class="mb-3 comment-card">
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-              <img src="https://scontent.fcai20-3.fna.fbcdn.net/v/t39.30808-6/329724069_541779894594590_1088093019109401317_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwePqO3RZ-2BIedt5bh-9_zh6QYDZ-VwnOHpBgNn5XCUdoPDripKgugv6nt-Z_mh_MRYaBSBToG2AalHAfwMYK&_nc_ohc=DJdoJU45ks4Ab7fpMYj&_nc_ht=scontent.fcai20-3.fna&oh=00_AfCGvx_06qxR-goPwBwvnacymRWxZqbVzrfIyfiVbn61UQ&oe=662049C0" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
+              <img src="https://static.wikia.nocookie.net/harrypotter/images/9/97/Harry_Potter.jpg" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
               <div class="comment-author ml-2">Newt Scamander</div>
             </div>
             <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${data.id}">
@@ -870,7 +870,7 @@ function fetchComments(scheduleId) {
         <div class="mb-3 comment-card">
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-              <img src="https://scontent.fcai20-3.fna.fbcdn.net/v/t39.30808-6/329724069_541779894594590_1088093019109401317_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHwePqO3RZ-2BIedt5bh-9_zh6QYDZ-VwnOHpBgNn5XCUdoPDripKgugv6nt-Z_mh_MRYaBSBToG2AalHAfwMYK&_nc_ohc=DJdoJU45ks4Ab7fpMYj&_nc_ht=scontent.fcai20-3.fna&oh=00_AfCGvx_06qxR-goPwBwvnacymRWxZqbVzrfIyfiVbn61UQ&oe=662049C0" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
+              <img src="https://static.wikia.nocookie.net/harrypotter/images/9/97/Harry_Potter.jpg" alt="Newt Scamander" class="comment-avatar" style="max-width: 40px; max-height: 40px;">
               <div class="comment-author ml-2">Newt Scamander</div>
             </div>
             <button class="btn btn-danger btn-sm delete-comment" data-comment-id="${comment.id}">
@@ -896,6 +896,38 @@ $('.btn[data-toggle="modal"]').click(function() {
 
     $(modalId + ' .modal-title').text(taskName);
 });
+        function addNewTask(projectId, taskName) {
+            $.ajax({
+                url: `/administration/public/projects/${projectId}/tasks`,
+                type: 'POST',
+                data: {
+                    name: taskName,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    // Reload the project after adding the new task
+                    loadProject(projectId);
+                },
+                error: function() {
+                    alert('Error adding new task');
+                }
+            });
+        }
+
+        $('#newTaskInput').on('keydown', function(event) {
+            if (event.keyCode === 13) {
+                var taskName = $(this).val().trim();
+
+                if (taskName !== '') {
+                    var projectId = $('.text-box-container').data('id');
+                    addNewTask(projectId, taskName);
+                    $(this).val('');
+                    location.reload();
+
+                }
+            }
+        });
+
     </script>
 
 </div>
