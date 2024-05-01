@@ -57,7 +57,7 @@ $num =0
                         $num ++;
                         @endphp
                     <tr>
-                        <th scope="row">{{ $num }}</th>
+                        <th scope="row">{{  $item->id }}</th>
                         <td>{{ $item->name }}</td>
                         <td>
                             <div class="priority-container">
@@ -114,7 +114,7 @@ $num =0
                         @if(DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->count() > 0)
                         @foreach (DB::table('schedule')->where('project_id', $id)->where('type',$item->name)->orderBy('id','desc')->get() as $item_schedule)
                         <tr>
-                            <th scope="row">{{ $num }}</th>
+                            <th scope="row">{{  $item_schedule->id }}</th>
                             <td>{{ $item_schedule->name }}</td>
                             <td>
                                 <div class="priority-container">

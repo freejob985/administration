@@ -627,33 +627,33 @@ function updateRowColor(taskId, status) {
 
 
         // تحديث حالة المهمة وتغيير لون الصف وفقًا لها
-$('.table-container').on('change', '.status-select', function() {
-    var selectedStatus = $(this).val();
-    var rowElement = $(this).closest('tr');
+// $('.table-container').on('change', '.status-select', function() {
+//     var selectedStatus = $(this).val();
+//     var rowElement = $(this).closest('tr');
 
-    switch (selectedStatus) {
-        case 'todo':
-            rowElement.css('background-color', '#f8f9fa');
-            break;
-        case 'in-progress':
-            rowElement.css('background-color', '#ffeeba');
-            break;
-        case 'done':
-            rowElement.css('background-color', '#8CEBA2');
-            break;
-        case 'error':
-            rowElement.css('background-color', '#FFA6AD');
-            break;
-        case 'study':
-            rowElement.css('background-color', '#9C9CFF');
-            break;
-        case 'research':
-            rowElement.css('background-color', '#8DF5F5');
-            break;
-        default:
-            rowElement.css('background-color', '');
-    }
-});
+//     switch (selectedStatus) {
+//         case 'todo':
+//             rowElement.css('background-color', '#f8f9fa');
+//             break;
+//         case 'in-progress':
+//             rowElement.css('background-color', '#ffeeba');
+//             break;
+//         case 'done':
+//             rowElement.css('background-color', '#8CEBA2');
+//             break;
+//         case 'error':
+//             rowElement.css('background-color', '#FFA6AD');
+//             break;
+//         case 'study':
+//             rowElement.css('background-color', '#9C9CFF');
+//             break;
+//         case 'research':
+//             rowElement.css('background-color', '#8DF5F5');
+//             break;
+//         default:
+//             rowElement.css('background-color', '');
+//     }
+// });
 
 
 function updateTaskStatus(taskId, status, priority) {

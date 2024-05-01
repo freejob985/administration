@@ -56,7 +56,7 @@ class TaskController extends Controller
         $task->name = $request->input('name');
         $task->project_id = $project->id;
         $task->save();
-$latestTaskId = Task::max('id');
+        $latestTaskId = Task::max('id');
 
 
 

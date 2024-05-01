@@ -220,6 +220,35 @@ progress-container {
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+.table {
+    border-collapse: collapse !important;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.progress-container {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 1px;
+    overflow: hidden;
+}
+.comment-author.ml-2 {
+    background: #00c851;
+    color: white;
+    padding: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 7px;
+}
+
     </style>
 
 

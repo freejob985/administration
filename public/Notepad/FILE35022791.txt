@@ -1,0 +1,22 @@
+public function getnameapi($value) {
+        $lang = $this->getLangValue();
+
+        $data = json_decode($value, true);
+        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+            return "Error decoding JSON: " . json_last_error_msg();
+        }
+
+
+        if (array_key_exists($lang, $data)) {
+            return $data[$lang];
+        } else {
+            return "Language not found";
+        }
+    }
+//======================================================
+
+public function getNameAttribute($value)
+    {
+//        dd($value);
+        return $this->getnameapi($value);
+    }

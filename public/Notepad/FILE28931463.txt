@@ -1,0 +1,7 @@
+function getLangValue()
+    {
+        $result = DB::table('lang')
+            ->value('lang');
+
+        return $result;
+    }

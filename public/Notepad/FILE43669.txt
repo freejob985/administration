@@ -1,0 +1,1 @@
+$data->getval("name",$item_schedule->lang )

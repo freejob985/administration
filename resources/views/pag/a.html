@@ -1,31 +1,49 @@
-<div class="modal fade left" id="subtasksModal" tabindex="-1" role="dialog" aria-labelledby="subtasksModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: blue; color: white;">
-                <h5 class="modal-title" id="subtasksModalLabel">Subtasks</h5> <button type="button" class="close"
-                    data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-            </div>
-            <div class="modal-body" id="sortable-list"> <!-- Subtasks content goes here -->
-                <div class="card draggable">
-                    <div class="card-body">
-                        <div class="form-check d-flex align-items-center"> <!-- Delete icon --> <i
-                                class="fas fa-trash delete-icon"></i> <input type="checkbox" id="subtaskCheckbox1"
-                                class="form-check-input mr-3" style="transform: scale(1.5);"> <label
-                                for="subtaskCheckbox1" class="form-check-label mb-0" style="font-size: 1.2em;">Subtask 1
-                                description</label> </div>
-                    </div>
-                </div>
-                <div class="card draggable">
-                    <div class="card-body">
-                        <div class="form-check d-flex align-items-center"> <!-- Delete icon --> <i
-                                class="fas fa-trash delete-icon"></i> <input type="checkbox" id="subtaskCheckbox2"
-                                class="form-check-input mr-3" style="transform: scale(1.5);"> <label
-                                for="subtaskCheckbox2" class="form-check-label mb-0" style="font-size: 1.2em;">Subtask 2
-                                description</label> </div>
-                    </div>
-                </div> <!-- Add your other subtasks here -->
-            </div>
-        </div>
-    </div>
-</div> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تيكست أريا مع اسماء الملفات</title>
+</head>
+<body>
+    <textarea id="textArea" cols="50" rows="10"></textarea><br>
+    <input type="file" id="fileInput" style="display:none;" multiple><br>
+    <button onclick="openFile()">فتح الملف</button><br>
+
+    <script>
+        // دالة لفتح ملف
+        function openFile() {
+            var fileInput = document.getElementById('fileInput');
+            fileInput.click();
+        }
+
+        // دالة للتحقق من اسم الملف وعرضه
+        function handleFile() {
+            var fileInput = document.getElementById('fileInput');
+            var files = fileInput.files;
+
+            if (files.length > 0) {
+                var textArea = document.getElementById('textArea');
+                textArea.value = ''; // إفراغ التيكست أريا
+
+                // عرض كل ملف بشكل منفصل
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = (function(file) {
+                        return function(event) {
+                            textArea.value += 'اسم الملف: ' + file.name + '\n================\n';
+                            textArea.value += event.target.result + '\n\n';
+                        };
+                    })(files[i]);
+
+                    reader.readAsText(files[i]);
+                }
+            }
+        }
+
+        // استماع لحدث change لإدخال الملف للحصول على اسم الملف
+        document.getElementById('fileInput').addEventListener('change', handleFile);
+    </script>
+</body>
+</html>

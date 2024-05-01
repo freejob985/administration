@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .project-container {
-            max-height: 80vh; /* تحديد الارتفاع الأقصى لمحتوى المشروع */
+            /* max-height: 80vh; تحديد الارتفاع الأقصى لمحتوى المشروع */
             overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
         }
         .completed {
@@ -63,23 +63,23 @@
 
         /* تنسيق لمحتوى المشروع */
         .project-container {
-            max-height: calc(100vh - 200px); /* تحديد الارتفاع الأقصى لمحتوى المشروع */
-            overflow-y: auto; /* السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
+            max-height: calc(100vh - 200px); تحديد الارتفاع الأقصى لمحتوى المشروع
+            /* overflow-y: auto; السماح بالتمرير العمودي عند تجاوز الارتفاع المحدد */
         }
         .project-name.bg-warning.text-white.fw-bold.py-2.rounded.mb-3 {
             color: black !important;
         }
         body {
-            position: relative; /* تحديد موضع العنصر الجسم */
-            min-height: 100vh; /* تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
-            padding-bottom: 150px; إضافة هامش أسفل لعدم تغطية الفوتر
+            position: relative; تحديد موضع العنصر الجسم
+            /* min-height: 100vh; تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
+            /* padding-bottom: 150px; إضافة هامش أسفل لعدم تغطية الفوتر */
         }
 
 
 
-        .footer-container {
+        /* .footer-container {
             height: 150px; /* تحديد ارتفاع الفوتر */
-        }
+        } */
         header {
             position: sticky;
             top: 0;
@@ -150,7 +150,20 @@ a#linke-titel {
     text-decoration: auto!important;
 }
 
+body {
+    position: relative;
+    /* min-height: 100vh; */
+    padding-bottom: 0; /* لا يوجد هامش أسفل */
+}
+body {
+    position: relative; /* تحديد موضع العنصر الجسم */
+    /* min-height: 100vh; تحديد الارتفاع الأدنى للجسم إلى ارتفاع الشاشة */
+    padding-bottom: 150px; /* إضافة هامش أسفل لعدم تغطية الفوتر */
+}
 
+/* .footer-container {
+    height: 150px; /* تحديد ارتفاع الفوتر */
+} */
     </style>
 </head>
 <body>
@@ -200,6 +213,29 @@ document.addEventListener('keydown', function(event) {
         // فتح النافذة المنبثقة لإضافة مشروع جديد
         $('#addProjectModal').modal('show');
     }
+});
+
+$(document).ready(function() {
+    $(document).on('keydown', function(event) {
+        if (event.key === 'Delete') {
+            if (confirm('هل أنت متأكد من حذف جميع البيانات من جميع الجداول؟ هذا الإجراء لا رجعة فيه.')) {
+                $.ajax({
+                    url: '/administration/public/delete-data',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('حدث خطأ أثناء حذف البيانات.');
+                    }
+                });
+            }
+        }
+    });
 });
 </script>
 </body>

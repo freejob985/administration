@@ -1,0 +1,13 @@
+{message: "CSRF token mismatch.", exception: "Symfony\Component\HttpKernel\Exception\HttpException",…}
+exception
+: 
+"Symfony\\Component\\HttpKernel\\Exception\\HttpException"
+file
+: 
+"D:\\server\\htdocs\\administration\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php"
+line
+: 
+492
+message
+: 
+"CSRF token mismatch."

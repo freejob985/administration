@@ -302,6 +302,12 @@
             margin: 0 10px;
         }
 
+.modal {
+    z-index: 9999; /* قيمة عالية لضمان ظهور الموديول فوق جميع الطبقات الأخرى */
+}
+body.modal-open {
+    overflow: hidden;
+}
     </style>
 </head>
 <body>
@@ -329,10 +335,18 @@
                     <textarea class="form-control notepad-textarea" id="fileContentTextarea" rows="20"></textarea>
                 </div>
             </div>
-            <div class="modal-footer notepad-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                <button type="button" class="btn btn-primary" id="saveChangesButton">حفظ التغييرات</button>
-            </div>
+<div class="modal-footer notepad-footer">
+    <div class="formatting-buttons">
+        <button type="button" class="btn btn-sm btn-secondary" id="increaseFont"><i class="material-icons">add</i></button>
+        <button type="button" class="btn btn-sm btn-secondary" id="decreaseFont"><i class="material-icons">remove</i></button>
+        <button type="button" class="btn btn-sm btn-secondary" id="alignLeft"><i class="material-icons">format_align_left</i></button>
+        <button type="button" class="btn btn-sm btn-secondary" id="alignRight"><i class="material-icons">format_align_right</i></button>
+        <button type="button" class="btn btn-sm btn-secondary" id="directionLTR"><i class="material-icons">arrow_back</i> LTR</button>
+        <button type="button" class="btn btn-sm btn-secondary" id="directionRTL">RTL <i class="material-icons">arrow_forward</i></button>
+    </div>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+    <button type="button" class="btn btn-primary" id="saveChangesButton">حفظ التغييرات</button>
+</div>
         </div>
     </div>
 </div>
@@ -372,7 +386,9 @@
     </div>
 
 
-    <div class="button-group">
+    <div class="button-group" style="
+    z-index: 1;
+">
         <a class="btn btn-primary"> الرئسية</a>
         <a href="{{ route('Tables.index', [$id]) }}" class="btn btn-secondary"> الجداول</a>
         <a href="http://localhost/administration/public/task" class="btn btn-success"> المشاريع</a>
@@ -531,12 +547,7 @@ function fetchNotepads() {
     <div class="card-description">${notepad.description}</div>
     <div class="card-details">${notepad.details}</div>
     <div class="card-buttons">
-        <div class="copy-text-button">
-            <button class="btn btn-primary btn-sm copy-button">
-                <i class="material-icons">content_copy</i>
-                نسخ النص
-            </button>
-        </div>
+
         <div class="open-file-button">
             <button class="btn btn-secondary btn-sm open-button">
                 <i class="material-icons">open_in_new</i>
@@ -689,8 +700,47 @@ $(document).on('click', '.card', function() {
             console.error('Failed to copy text: ', err);
         });
 });
+let fontSize = 16; // القيمة الافتراضية لحجم الخط
 
+// زيادة حجم الخط
+$('#increaseFont').click(function() {
+    fontSize += 2;
+    $('#fileContentTextarea').css('font-size', fontSize + 'px');
+});
 
+// تقليل حجم الخط
+$('#decreaseFont').click(function() {
+    fontSize -= 2;
+    $('#fileContentTextarea').css('font-size', fontSize + 'px');
+});
+
+// محاذاة النص إلى اليسار
+$('#alignLeft').click(function() {
+    $('#fileContentTextarea').css('text-align', 'left');
+});
+
+// محاذاة النص إلى اليمين
+$('#alignRight').click(function() {
+    $('#fileContentTextarea').css('text-align', 'right');
+});
+// تعيين اتجاه النص من اليسار إلى اليمين (LTR)
+$('#directionLTR').click(function() {
+    $('#fileContentTextarea').css('direction', 'ltr');
+    $('#fileContentTextarea').css('text-align', 'left'); // محاذاة النص إلى اليسار بشكل افتراضي
+});
+
+// تعيين اتجاه النص من اليمين إلى اليسار (RTL)
+$('#directionRTL').click(function() {
+    $('#fileContentTextarea').css('direction', 'rtl');
+    $('#fileContentTextarea').css('text-align', 'right'); // محاذاة النص إلى اليمين بشكل افتراضي
+});
+$('#editModal').on('shown.bs.modal', function () {
+    $('body').addClass('modal-open');
+})
+
+$('#editModal').on('hidden.bs.modal', function () {
+    $('body').removeClass('modal-open');
+})
 </script>
 
 

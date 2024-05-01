@@ -23,7 +23,8 @@ Route::get('/Lansori', [TaskController::class, 'Lansori'])->name('Lansori.index'
 Route::get('/Artificial', [TaskController::class, 'Artificial'])->name('Artificial.index');
 
 
-
+// Route::post('/delete-data', 'YourController@deleteData');
+Route::post('/delete-data', [ProjectController::class, 'deleteData']);
 
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::post('/projects', [ProjectController::class, 'store']);
@@ -119,3 +120,8 @@ Route::get('/notepads/file/{filename}', [NotepadController::class, 'showFile'])-
 // app/Http/Controllers/NotepadController.php
 
 Route::put('/notepads/update/{id}', [NotepadController::class, 'update']);
+
+
+Route::get('/', function () {
+    return view('copy');
+});

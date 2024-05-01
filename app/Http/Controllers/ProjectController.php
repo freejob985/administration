@@ -59,4 +59,31 @@ public function destroy($id)
     {
         return view('projects.show', compact('project'));
     }
+
+public function deleteData(Request $request)
+{
+    try {
+        // إزالة قيود المفاتيح الأجنبية مؤقتًا
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $tables = DB::select('SHOW TABLES');
+
+        foreach ($tables as $table) {
+            $tableName = reset($table);
+            DB::table($tableName)->truncate();
+        }
+
+        // إعادة تعيين قيود المفاتيح الأجنبية
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        return response()->json(['message' => 'تم حذف جميع البيانات من جميع الجداول بنجاح.']);
+    } catch (\Exception $e) {
+        // إعادة تعيين قيود المفاتيح الأجنبية في حالة حدوث خطأ
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
+
 }

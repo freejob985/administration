@@ -7,6 +7,7 @@ use App\Models\Table;
 use App\Models\schedule;
 use session;
 use Illuminate\Http\Request;
+use DB;
 
 class TablesController extends Controller
 {
@@ -45,42 +46,60 @@ class TablesController extends Controller
 
 public function update(Request $request)
 {
-    // التحقق من وجود scheduleId في الطلب
-    if ($request->has('scheduleId')) {
-        // العثور على الجدول بالرقم المحدد
-        $schedule = Schedule::find($request->input('scheduleId'));
+   // Check if scheduleId is present in the request
+   if ($request->has('scheduleId')) {
+       // Find the schedule by the given ID
+       $schedule = Schedule::find($request->input('scheduleId'));
+       $taskId = $schedule->task_id;
 
-        // التحقق من وجود الجدول
-        if ($schedule) {
-            // التحقق مما إذا كانت هناك قيمة لأولوية في الطلب وتحديثها
-            if ($request->has('priority')) {
-                $schedule->priority = $request->input('priority');
-            }
+       // Check if the schedule exists
+       if ($schedule) {
+           // Check if there is a value for priority in the request and update it
+           if ($request->has('priority')) {
+               $schedule->priority = $request->input('priority');
+           }
 
-            // التحقق مما إذا كانت هناك قيمة لحالة في الطلب وتحديثها
-            if ($request->has('status')) {
-                $schedule->status = $request->input('status');
-            }
+           // Check if there is a value for status in the request and update it
+           if ($request->has('status')) {
+// dd(1);
+               $status = $request->input('status');
+               $schedule->status = $status;
+// dd($status);
+               if ($status === 'done') {
+// dd(2);
+                   DB::table('tasks')
+                       ->where('id', $taskId)
+                       ->update(['completed' => 1]);
+               } else {
+                   DB::table('tasks')
+                       ->where('id', $taskId)
+                       ->update(['completed' => 0]);
+               }
+           }
 
-            // حفظ التغييرات
-            $schedule->save();
+           // Save the changes
+           $schedule->save();
 
-            // إرجاع الجدول المحدث كـ JSON
-            return response()->json($schedule);
-        } else {
-            // إذا لم يتم العثور على الجدول المطلوب
-            return response()->json(['message' => 'Schedule not found'], 404);
-        }
-    } else {
-        // إذا لم يتم إرسال معرف الجدول (scheduleId)
-        return response()->json(['message' => 'Schedule ID is required'], 400);
-    }
+           // Return the updated schedule as JSON
+           return response()->json($schedule);
+       } else {
+           // If the requested schedule is not found
+           return response()->json(['message' => 'Schedule not found'], 404);
+       }
+   } else {
+       // If no scheduleId is provided in the request
+       return response()->json(['message' => 'Schedule ID is required'], 400);
+   }
 }
 
 
 
    public function updateType(Request $request, Schedule $schedule)
    {
+// dd(
+
+//  $request->all()
+// );
    $schedule->update([
    'type' => $request->input('type') ?? "Basic",
    ]);
