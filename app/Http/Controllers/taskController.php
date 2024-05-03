@@ -26,8 +26,18 @@ class TaskController extends Controller
 
   public function update(Request $request, Task $task)
     {
+
         $task->completed = $request->input('completed');
         $task->save();
+
+    $completed = $request->input('completed');
+    $status = $completed == 1 ? 'done' : null;
+    DB::table('schedule')
+        ->where('task_id', $task->id)
+        ->update([
+            'status' => $status
+        ]);
+
 
         return response()->json(['success' => true]);
     }

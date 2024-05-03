@@ -248,7 +248,9 @@ progress-container {
     text-transform: uppercase;
     border-radius: 7px;
 }
-
+tr.ui-sortable-handle {
+    border: 6px solid white;
+}
     </style>
 
 
